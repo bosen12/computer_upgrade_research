@@ -48,6 +48,13 @@
   .showcase{margin:24px 0 0;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
   .showcase img{width:100%;display:block;max-height:440px;object-fit:cover}
   .showcase figcaption{padding:10px 16px;font-size:12.5px;color:var(--muted);background:var(--panel)}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:6px}
+  .gallery figure{margin:0;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform .15s,border-color .15s}
+  .gallery figure:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .gallery img{width:100%;height:200px;object-fit:contain;background:#0a0c10;display:block;padding:14px}
+  .gallery figcaption{padding:12px 14px;border-top:1px solid var(--line)}
+  .gallery .cn{font-weight:700;font-size:14px} .gallery .cd{color:var(--muted);font-size:12.5px;margin-top:2px}
   .card ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px}
   .card .old{margin-top:10px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
   .card .old s{color:#6b7585}
@@ -116,7 +123,7 @@
   </header>
 
   <nav class="toc">
-    <a href="#spec">規格對比</a><a href="#parts">零件用料</a><a href="#mb">主機板梯隊</a>
+    <a href="#spec">規格對比</a><a href="#looks">外觀亮點</a><a href="#parts">零件用料</a><a href="#mb">主機板梯隊</a>
     <a href="#gpu">顯卡梯隊</a><a href="#game">遊戲效能</a><a href="#ai">AI 生圖</a>
     <a href="#models">可用模型</a><a href="#multi">多工</a><a href="#verdict">總結評分</a>
   </nav>
@@ -127,13 +134,25 @@
     <p class="lead">整套屬於跨世代升級：CPU 換代、平台從 DDR4 升 DDR5、顯示記憶體翻倍、SSD 進入 PCIe Gen5。</p>
     <div class="grid">
       <div class="card"><svg class="ico"><use href="#part-cpu"/></svg><div class="ttl">處理器 CPU</div><div class="model">AMD Ryzen 7 7700 MPK</div><ul><li>Zen 4 · 5nm · 8C/16T</li><li>3.8 / 5.3 GHz · 65W</li></ul><div class="old"><s>舊：Intel i5-12400 6C/12T</s></div></div>
-      <div class="card"><img class="cardphoto" src="../assets/images/b850.png" alt="技嘉 B850 AORUS STEALTH"><div class="ttl">主機板</div><div class="model">技嘉 B850 AORUS STEALTH</div><div class="photocap">📷 真實產品照</div><ul><li>背插式 ATX · 14+2+2 相</li><li>5GbE + Wi-Fi 7 · 雙 Gen5 M.2</li></ul><div class="old"><s>舊：MSI PRO B760M-A D4</s></div></div>
-      <div class="card"><img class="cardphoto" src="../assets/images/1-biwin-dw100-memory-black-1.webp" alt="Biwin Black Opal DW100 DDR5"><div class="ttl">記憶體</div><div class="model">Biwin Black Opal 48GB</div><div class="photocap">📷 真實產品照</div><ul><li>DDR5-6000 CL28 (24×2)</li><li>真實延遲 ~9.33ns</li></ul><div class="old"><s>舊：32GB DDR4-3200</s></div></div>
-      <div class="card"><img class="cardphoto" src="../assets/images/5070ti.png" alt="技嘉 RTX 5070 Ti GAMING OC"><div class="ttl">顯示卡</div><div class="model">技嘉 RTX 5070 Ti GAMING OC</div><div class="photocap">📷 真實產品照</div><ul><li>Blackwell · 16GB GDDR7</li><li>8960 CUDA · Boost 2588MHz</li></ul><div class="old"><s>舊：RTX 4060 Ti 8GB</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-mobo"/></svg><div class="ttl">主機板</div><div class="model">技嘉 B850 AORUS STEALTH</div><ul><li>背插式 ATX · 14+2+2 相</li><li>5GbE + Wi-Fi 7 · 雙 Gen5 M.2</li></ul><div class="old"><s>舊：MSI PRO B760M-A D4</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-ram"/></svg><div class="ttl">記憶體</div><div class="model">Biwin Black Opal 48GB</div><ul><li>DDR5-6000 CL28 (24×2)</li><li>真實延遲 ~9.33ns</li></ul><div class="old"><s>舊：32GB DDR4-3200</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-gpu"/></svg><div class="ttl">顯示卡</div><div class="model">技嘉 RTX 5070 Ti GAMING OC</div><ul><li>Blackwell · 16GB GDDR7</li><li>8960 CUDA · Boost 2588MHz</li></ul><div class="old"><s>舊：RTX 4060 Ti 8GB</s></div></div>
       <div class="card"><svg class="ico"><use href="#part-ssd"/></svg><div class="ttl">固態硬碟</div><div class="model">致態 TiPro9000 1TB</div><ul><li>PCIe Gen5 · 14,000 MB/s</li><li>2GB DRAM Cache</li></ul><div class="old"><s>舊：美光 P5 Plus Gen4</s></div></div>
       <div class="card"><svg class="ico"><use href="#part-cooler"/></svg><div class="ttl">散熱器</div><div class="model">ID-COOLING FX360 TD</div><ul><li>360mm 一體式水冷</li><li>壓 65W 7700 綽綽有餘</li></ul><div class="old"><s>舊：原廠/入門空冷</s></div></div>
-      <div class="card"><img class="cardphoto" src="../assets/images/m580pro.jpg" alt="全漢 M580 PRO-BA"><div class="ttl">機殼</div><div class="model">全漢 M580 PRO-BA</div><div class="photocap">📷 真實產品照</div><ul><li>背插分艙 · 全景玻璃</li><li>支援 360 水冷 / ATX</li></ul><div class="old"><s>舊：未知機殼</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-case"/></svg><div class="ttl">機殼</div><div class="model">全漢 M580 PRO-BA</div><ul><li>背插分艙 · 全景玻璃</li><li>支援 360 水冷 / ATX</li></ul><div class="old"><s>舊：未知機殼</s></div></div>
       <div class="card"><svg class="ico"><use href="#part-psu"/></svg><div class="ttl">電源供應器</div><div class="model">微星 MPG A850GS</div><ul><li>850W 金牌全模組</li><li>ATX 3.1 · 原生 12V-2×6</li></ul><div class="old"><s>舊：650W</s></div></div>
+    </div>
+  </section>
+
+  <!-- 外觀亮點 -->
+  <section id="looks">
+    <h2><span class="n">★</span>外觀亮點 · 主要可見零件</h2>
+    <p class="lead">這套的視覺重點集中在這四個零件——裝進全景玻璃機殼、點亮 RGB 後最搶眼。CPU / SSD / 水冷 / 電源藏在背板與機殼內，故規格區以示意圖呈現。</p>
+    <div class="gallery">
+      <figure><img src="../assets/images/5070ti.png" alt="技嘉 RTX 5070 Ti GAMING OC"><figcaption><div class="cn">技嘉 RTX 5070 Ti GAMING OC</div><div class="cd">三風扇風之力散熱 · RGB 燈效</div></figcaption></figure>
+      <figure><img src="../assets/images/b850.png" alt="技嘉 B850 AORUS STEALTH"><figcaption><div class="cn">技嘉 B850 AORUS STEALTH</div><div class="cd">背插式主機板 · 正面走線極簡</div></figcaption></figure>
+      <figure><img src="../assets/images/1-biwin-dw100-memory-black-1.webp" alt="Biwin Black Opal DW100 DDR5"><figcaption><div class="cn">Biwin Black Opal DW100</div><div class="cd">DDR5-6000 CL28 · RGB 燈條</div></figcaption></figure>
+      <figure><img src="../assets/images/m580pro.jpg" alt="全漢 M580 PRO-BA"><figcaption><div class="cn">全漢 M580 PRO-BA</div><div class="cd">全景曲面玻璃 · 背插分艙</div></figcaption></figure>
     </div>
   </section>
 
