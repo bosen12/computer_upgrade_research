@@ -43,6 +43,9 @@
   .cardphoto{width:100%;height:116px;object-fit:contain;background:#f1f4f3;border:1px solid var(--line);
     border-radius:10px;margin-bottom:8px;padding:6px}
   .photocap{font-size:11px;color:var(--muted);margin:-4px 0 8px}
+  .showcase{margin:22px 0 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .showcase img{width:100%;display:block;max-height:430px;object-fit:cover}
+  .showcase figcaption{padding:10px 16px;font-size:12.5px;color:var(--muted);background:var(--soft)}
   .card ul{margin:0;padding-left:17px;color:var(--muted);font-size:13px}
   .tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
   .tbl th,.tbl td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line)}
@@ -86,6 +89,7 @@
       <span class="chip">GPU <b>4060 Ti 8G → 5070 Ti 16G</b></span>
       <span class="chip">RAM <b>32G DDR4 → 48G DDR5</b></span>
     </div>
+    <figure class="showcase"><img src="../assets/images/build-render-white.jpg" alt="整機組裝示意"><figcaption>🖥️ 整機組裝示意（AI 生成示意圖）· 技嘉顯卡 + B850 STEALTH + 360 水冷 + 全景玻璃機殼</figcaption></figure>
   </header>
 
   <nav class="toc">
@@ -98,12 +102,12 @@
     <h2><span class="n">1.</span>各零件分析</h2>
     <div class="grid">
       <div class="card"><svg class="ico"><use href="#part-cpu"/></svg><div class="ttl">CPU</div><div class="model">Ryzen 7 7700</div><ul><li>8C16T，比 12400 多 2 核心</li><li>多工/AI/生圖提升明顯</li><li>遊戲平均 +15~30%</li></ul></div>
-      <div class="card"><svg class="ico"><use href="#part-mobo"/></svg><div class="ttl">主機板</div><div class="model">B850 AORUS STEALTH</div><ul><li>14+2+2 相供電</li><li>5GbE + Wi-Fi 7 · PCIe 5.0</li><li>可升級 Zen5/Zen6</li></ul></div>
-      <div class="card"><svg class="ico"><use href="#part-ram"/></svg><div class="ttl">記憶體</div><div class="model">DDR5-6000 CL28 48GB</div><ul><li>延遲低</li><li>AI、生圖、大型模擬更有利</li><li>48GB 足夠多工</li></ul></div>
-      <div class="card"><img class="cardphoto" src="../assets/images/gpu-rtx5070ti.jpg" alt="NVIDIA GeForce RTX 5070 Ti"><div class="ttl">顯示卡</div><div class="model">RTX 5070 Ti Gaming OC</div><div class="photocap">📷 真實照片 · 5070 Ti 公版示意（實品為三風扇 Gaming OC）</div><ul><li>Windforce 三風扇</li><li>CP 值很高的一級產品</li><li>與 ROG 僅差 1~3%</li></ul></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/b850.png" alt="技嘉 B850 AORUS STEALTH"><div class="ttl">主機板</div><div class="model">B850 AORUS STEALTH</div><div class="photocap">📷 真實產品照</div><ul><li>14+2+2 相供電</li><li>5GbE + Wi-Fi 7 · PCIe 5.0</li><li>可升級 Zen5/Zen6</li></ul></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/1-biwin-dw100-memory-black-1.webp" alt="Biwin Black Opal DW100 DDR5"><div class="ttl">記憶體</div><div class="model">DDR5-6000 CL28 48GB</div><div class="photocap">📷 真實產品照 · Biwin</div><ul><li>延遲低</li><li>AI、生圖、大型模擬更有利</li><li>48GB 足夠多工</li></ul></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/5070ti.png" alt="技嘉 RTX 5070 Ti GAMING OC"><div class="ttl">顯示卡</div><div class="model">RTX 5070 Ti Gaming OC</div><div class="photocap">📷 真實產品照</div><ul><li>Windforce 三風扇</li><li>CP 值很高的一級產品</li><li>與 ROG 僅差 1~3%</li></ul></div>
       <div class="card"><svg class="ico"><use href="#part-ssd"/></svg><div class="ttl">SSD</div><div class="model">TiPro9000 1TB</div><ul><li>約 14GB/s 讀取</li><li>載入大型模型更快</li><li>生圖載入 Checkpoint 快</li></ul></div>
       <div class="card"><svg class="ico"><use href="#part-cooler"/></svg><div class="ttl">散熱器</div><div class="model">ID-Cooling FX360</div><ul><li>360mm 一體式水冷</li><li>壓 7700 綽綽有餘</li></ul></div>
-      <div class="card"><svg class="ico"><use href="#part-case"/></svg><div class="ttl">機殼</div><div class="model">Montech M580 PRO</div><ul><li>支援 360 水冷</li><li>支援 ATX 主機板</li></ul></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/m580pro.jpg" alt="全漢 M580 PRO-BA"><div class="ttl">機殼</div><div class="model">全漢 M580 PRO（BA 背插）</div><div class="photocap">📷 真實產品照</div><ul><li>支援 360 水冷</li><li>支援 ATX 主機板</li></ul></div>
       <div class="card"><svg class="ico"><use href="#part-psu"/></svg><div class="ttl">電源</div><div class="model">MSI MPG A850GS</div><ul><li>850W PCIe5</li><li>應對新世代顯卡功耗</li></ul></div>
     </div>
   </section>

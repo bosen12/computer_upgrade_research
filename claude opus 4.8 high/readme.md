@@ -11,6 +11,8 @@
 ![VRAM](https://img.shields.io/badge/VRAM-8G_→_16G-D97757?style=for-the-badge)
 ![Price](https://img.shields.io/badge/總價-NT$_83,458-D97757?style=for-the-badge)
 
+<img src="../assets/images/build-render-white.jpg" width="560" alt="整機組裝示意（AI 生成示意圖）">
+
 📄 另有精美版本：[**HTML 報告**](report.html) ｜ [**PDF 報告**](report.pdf)
 
 </div>

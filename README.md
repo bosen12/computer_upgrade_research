@@ -37,13 +37,20 @@
 
 ---
 
-## 🖼️ 關於產品圖片（混合策略）
+## 🖼️ 關於產品圖片
 
-- 🎮 **顯示卡**：採用**真實照片**（[`assets/images/gpu-rtx5070ti.jpg`](assets/images/gpu-rtx5070ti.jpg)，來源 TechPowerUp，1200×594）。為 RTX 5070 Ti **公版示意**，實品為技嘉三風扇 GAMING OC，已於圖說標明。
-- 🧩 **其餘零件**：採用**精美 SVG 向量示意圖**，以**精確型號標註**（CPU / 主機板 / 記憶體 / SSD / 水冷 / 機殼 / 電源）。
+由你提供官方產品照後，已全部接上（逐一核對型號，無張冠李戴）：
 
-> ⚠️ 為什麼不是全部真實照？確切型號的官方照都在會封鎖此環境的網站上（Gigabyte / DuckDuckGo 回 403、Bing 無 JS 退化）。能穩定下載的只有同類代表照或公版照——為避免把「別的型號」當成你的零件（即「搞混」），其餘維持精確 SVG。
-> 👉 若你有官方產品照，放進 [`assets/images/`](assets/images/) 並以零件命名即可無痛替換，我可再幫你接上並重出 PDF。
+| 零件 | 圖片 | 來源 |
+|------|------|------|
+| 🎮 顯示卡 技嘉 RTX 5070 Ti GAMING OC | [`5070ti.png`](assets/images/5070ti.png) | ✅ 真實產品照 |
+| 🧩 主機板 技嘉 B850 AORUS STEALTH | [`b850.png`](assets/images/b850.png) | ✅ 真實產品照 |
+| 💾 記憶體 Biwin Black Opal DW100 | [`1-biwin-dw100-memory-black-1.webp`](assets/images/1-biwin-dw100-memory-black-1.webp) | ✅ 真實產品照 |
+| 🗄️ 機殼 全漢 M580 PRO-BA | [`m580pro.jpg`](assets/images/m580pro.jpg) | ✅ 真實產品照 |
+| 🖥️ 整機封面 | [`build-render-rgb.jpg`](assets/images/build-render-rgb.jpg) ／ [`build-render-white.jpg`](assets/images/build-render-white.jpg) | 🎨 AI 生成示意圖 |
+| CPU / SSD / 水冷 / 電源 | — | 🧩 精確標註之 SVG 向量圖 |
+
+> 🎨 整機封面圖為 AI 生成示意圖，已標明；CPU、SSD、水冷、電源未提供實照，維持精確 SVG。若補上實照，丟進 [`assets/images/`](assets/images/) 我可再接上並重出 PDF。
 
 ---
 

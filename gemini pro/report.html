@@ -51,6 +51,9 @@
   .cardphoto{width:100%;height:120px;object-fit:contain;background:#0e1018;border:1px solid var(--line);
     border-radius:12px;margin-bottom:10px;padding:6px}
   .photocap{font-size:11px;color:var(--muted);margin:-6px 0 8px}
+  .showcase{margin:24px 0 0;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+  .showcase img{width:100%;display:block;max-height:440px;object-fit:cover}
+  .showcase figcaption{padding:10px 16px;font-size:12.5px;color:var(--muted);background:#fff}
   .card ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px}
   .card .old{margin-top:10px;font-size:12px;color:#9aa3b8;border-top:1px dashed var(--line);padding-top:8px}
   .tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
@@ -100,6 +103,7 @@
       <span class="chip">⚡ SSD <b>Gen4 → Gen5</b></span>
       <span class="chip">💰 總價 <b>NT$ 83,458</b></span>
     </div>
+    <figure class="showcase"><img src="../assets/images/build-render-rgb.jpg" alt="整機組裝示意"><figcaption>🎨 整機組裝示意（AI 生成示意圖）· 技嘉 RTX 顯卡 + B850 STEALTH + 360 水冷 + 全景玻璃機殼 RGB 燈效</figcaption></figure>
   </header>
 
   <nav class="toc">
@@ -113,12 +117,12 @@
     <p class="lead">這是一次跨世代的平台躍升，每個核心組件都迎來實質改變。</p>
     <div class="grid">
       <div class="card"><svg class="ico"><use href="#part-cpu"/></svg><div class="ttl">中央處理器</div><div class="model">AMD Ryzen 7 7700 MPK</div><ul><li>8C/16T · TSMC 5nm · Zen 4</li><li>TDP 僅 65W，能耗比極高</li></ul><div class="old">舊：i5-12400 (6C/12T)</div></div>
-      <div class="card"><svg class="ico"><use href="#part-mobo"/></svg><div class="ttl">主機板</div><div class="model">技嘉 B850 AORUS STEALTH</div><ul><li>背插式 · 14+2+2 相</li><li>正面接線全移背面，極簡</li></ul><div class="old">舊：MSI PRO B760M-A D4</div></div>
-      <div class="card"><svg class="ico"><use href="#part-ram"/></svg><div class="ttl">記憶體</div><div class="model">Biwin 佰維 Black Opal 48GB</div><ul><li>DDR5-6000 CL28 超低時序</li><li>特挑 Hynix 顆粒</li></ul><div class="old">舊：32GB DDR4</div></div>
-      <div class="card"><img class="cardphoto" src="../assets/images/gpu-rtx5070ti.jpg" alt="NVIDIA GeForce RTX 5070 Ti"><div class="ttl">顯示卡</div><div class="model">技嘉 RTX 5070 Ti GAMING OC</div><div class="photocap">📷 真實照片 · RTX 5070 Ti 公版示意（實品為技嘉三風扇 GAMING OC）</div><ul><li>Blackwell · 16GB VRAM</li><li>VRAM 焦慮徹底解決</li></ul><div class="old">舊：RTX 4060 Ti 8GB</div></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/b850.png" alt="技嘉 B850 AORUS STEALTH"><div class="ttl">主機板</div><div class="model">技嘉 B850 AORUS STEALTH</div><div class="photocap">📷 真實產品照</div><ul><li>背插式 · 14+2+2 相</li><li>正面接線全移背面，極簡</li></ul><div class="old">舊：MSI PRO B760M-A D4</div></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/1-biwin-dw100-memory-black-1.webp" alt="Biwin Black Opal DW100 DDR5"><div class="ttl">記憶體</div><div class="model">Biwin 佰維 Black Opal 48GB</div><div class="photocap">📷 真實產品照</div><ul><li>DDR5-6000 CL28 超低時序</li><li>特挑 Hynix 顆粒</li></ul><div class="old">舊：32GB DDR4</div></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/5070ti.png" alt="技嘉 RTX 5070 Ti GAMING OC"><div class="ttl">顯示卡</div><div class="model">技嘉 RTX 5070 Ti GAMING OC</div><div class="photocap">📷 真實產品照</div><ul><li>Blackwell · 16GB VRAM</li><li>VRAM 焦慮徹底解決</li></ul><div class="old">舊：RTX 4060 Ti 8GB</div></div>
       <div class="card"><svg class="ico"><use href="#part-ssd"/></svg><div class="ttl">固態硬碟</div><div class="model">致態 TiPro9000 1TB Gen5</div><ul><li>讀 14,000 / 寫 12,500 MB/s</li><li>獨立 DRAM 快取</li></ul><div class="old">舊：美光 P5 Plus Gen4</div></div>
       <div class="card"><svg class="ico"><use href="#part-cooler"/></svg><div class="ttl">散熱器</div><div class="model">ID-COOLING FX360 TD</div><ul><li>360 水冷 · 冷頭數位螢幕</li><li>壓 65W 極度大材小用</li></ul><div class="old">舊：原廠/入門空冷</div></div>
-      <div class="card"><svg class="ico"><use href="#part-case"/></svg><div class="ttl">機殼</div><div class="model">全漢 M580 PRO-BA</div><ul><li>全景海景房 · 原生背插</li><li>玻璃防爆 · 空間寬敞</li></ul><div class="old">舊：舊有機殼</div></div>
+      <div class="card"><img class="cardphoto" src="../assets/images/m580pro.jpg" alt="全漢 M580 PRO-BA"><div class="ttl">機殼</div><div class="model">全漢 M580 PRO-BA</div><div class="photocap">📷 真實產品照</div><ul><li>全景海景房 · 原生背插</li><li>玻璃防爆 · 空間寬敞</li></ul><div class="old">舊：舊有機殼</div></div>
       <div class="card"><svg class="ico"><use href="#part-psu"/></svg><div class="ttl">電源供應器</div><div class="model">微星 MPG A850GS</div><ul><li>850W 金牌全模組</li><li>ATX 3.1 · 12V-2×6 不易熔</li></ul><div class="old">舊：650W</div></div>
     </div>
   </section>

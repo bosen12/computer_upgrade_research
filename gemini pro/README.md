@@ -11,6 +11,8 @@
 ![RAM](https://img.shields.io/badge/RAM-48GB_DDR5--6000_CL28-7A5CFF?style=for-the-badge)
 ![Price](https://img.shields.io/badge/總價-NT$_83,458-EC4899?style=for-the-badge)
 
+<img src="../assets/images/build-render-rgb.jpg" width="560" alt="整機組裝示意（AI 生成示意圖）">
+
 📄 另有精美版本：[**HTML 報告**](report.html) ｜ [**PDF 報告**](report.pdf)
 
 </div>
