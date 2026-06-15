@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>電腦升級完整分析報告 · Claude Opus 4.8</title>
+<style>
+  :root{
+    --bg:#0e1014; --panel:#161a21; --panel2:#1d222c; --text:#e7ebf2; --muted:#98a3b3;
+    --accent:#d97757; --accent2:#e8a87c; --line:#272d39; --good:#5fb878; --warn:#e3b341; --bad:#e06c6c;
+    --radius:16px; --shadow:0 8px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,rgba(217,119,87,.12),transparent 60%),var(--bg);
+    color:var(--text);font-family:"Segoe UI","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.7;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--accent2);text-decoration:none}
+  /* hero */
+  .hero{padding:64px 0 36px;border-bottom:1px solid var(--line)}
+  .badge{display:inline-flex;gap:8px;align-items:center;font-size:13px;letter-spacing:.06em;color:var(--accent2);
+    border:1px solid var(--line);background:var(--panel);padding:6px 14px;border-radius:999px;text-transform:uppercase}
+  h1{font-size:40px;line-height:1.18;margin:18px 0 10px;font-weight:800;letter-spacing:-.01em}
+  h1 .arrow{color:var(--accent)}
+  .sub{color:var(--muted);font-size:17px;max-width:760px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 13px;font-size:13px;color:var(--muted)}
+  .chip b{color:var(--text)}
+  .price-tag{margin-left:auto}
+  /* sections */
+  section{padding:48px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:26px;margin:0 0 6px;font-weight:800;display:flex;align-items:center;gap:12px}
+  h2 .n{font-size:14px;color:var(--accent);border:1px solid var(--accent);border-radius:8px;padding:2px 9px;font-weight:700}
+  .lead{color:var(--muted);margin:0 0 26px;max-width:820px}
+  h3{font-size:18px;margin:30px 0 12px}
+  /* component grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);transition:transform .15s,border-color .15s}
+  .card:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .card .ico{width:64px;height:64px;color:var(--accent);display:block;margin-bottom:10px}
+  .card .ttl{font-weight:700;font-size:15px}
+  .card .model{color:var(--accent2);font-size:13px;margin:2px 0 10px}
+  .card ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px}
+  .card .old{margin-top:10px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+  .card .old s{color:#6b7585}
+  /* tables */
+  .tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;overflow:hidden;border-radius:12px}
+  .tbl th,.tbl td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line)}
+  .tbl thead th{background:var(--panel2);color:var(--text);font-weight:700;border-bottom:2px solid var(--accent)}
+  .tbl tbody tr:nth-child(even){background:rgba(255,255,255,.02)}
+  .tbl tbody tr:hover{background:rgba(217,119,87,.06)}
+  .tbl .star{color:var(--accent2)}
+  .scroll{overflow-x:auto}
+  .up{color:var(--good);font-weight:700}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700}
+  .pill.g{background:rgba(95,184,120,.15);color:var(--good)} .pill.w{background:rgba(227,179,65,.15);color:var(--warn)}
+  .pill.b{background:rgba(224,108,108,.15);color:var(--bad)} .pill.n{background:rgba(152,163,179,.15);color:var(--muted)}
+  /* callouts */
+  .note{display:flex;gap:14px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:12px;padding:16px 18px;margin:18px 0}
+  .note.warn{border-left-color:var(--warn)} .note.good{border-left-color:var(--good)}
+  .note .k{font-weight:800;color:var(--accent2);white-space:nowrap}
+  /* stat row */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:8px 0 4px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+  .stat .big{font-size:30px;font-weight:800;color:var(--accent2)}
+  .stat .lbl{color:var(--muted);font-size:13px;margin-top:4px}
+  /* score bars */
+  .bar{display:flex;align-items:center;gap:12px;margin:10px 0}
+  .bar .name{width:120px;font-size:14px;color:var(--muted)}
+  .bar .track{flex:1;height:10px;background:var(--panel2);border-radius:999px;overflow:hidden}
+  .bar .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}
+  .bar .val{width:46px;text-align:right;font-weight:700}
+  footer{padding:40px 0 0;color:var(--muted);font-size:13px;text-align:center}
+  /* nav */
+  nav.toc{position:sticky;top:0;background:rgba(14,16,20,.85);backdrop-filter:blur(8px);z-index:9;
+    border-bottom:1px solid var(--line);margin:0 -22px;padding:10px 22px;display:flex;gap:6px;overflow-x:auto}
+  nav.toc a{color:var(--muted);font-size:13px;white-space:nowrap;padding:6px 11px;border-radius:8px}
+  nav.toc a:hover{background:var(--panel);color:var(--text)}
+  @media print{nav.toc{display:none}section{padding:26px 0}.hero{padding:24px 0}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="part-cpu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="30" y="30" width="60" height="60" rx="6" fill="var(--accent)" fill-opacity="0.15"/><rect x="42" y="42" width="36" height="36" rx="4" stroke="var(--accent2)"/><g stroke-linecap="round"><path d="M44 30V18M56 30V18M68 30V18M76 30V18M44 90v12M56 90v12M68 90v12M76 90v12M30 44H18M30 56H18M30 68H18M30 76H18M90 44h12M90 56h12M90 68h12M90 76h12"/></g></g></symbol>
+<symbol id="part-mobo" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="14" y="14" width="92" height="92" rx="6" fill="var(--accent)" fill-opacity="0.10"/><rect x="26" y="26" width="26" height="26" rx="3" stroke="var(--accent2)"/><rect x="64" y="30" width="10" height="42" rx="2"/><rect x="78" y="30" width="10" height="42" rx="2"/><rect x="26" y="78" width="64" height="8" rx="3"/><circle cx="39" cy="64" r="3" fill="currentColor"/><circle cx="50" cy="64" r="3" fill="currentColor"/></g></symbol>
+<symbol id="part-ram" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="34" width="80" height="46" rx="4" fill="var(--accent)" fill-opacity="0.15"/><path d="M28 80v8M40 80v8M52 80v8M64 80v8M76 80v8M88 80v8" stroke-linecap="round"/><rect x="30" y="20" width="60" height="14" rx="3" fill="var(--accent2)" stroke="none" opacity="0.85"/><path d="M30 50h60M30 60h60" stroke-opacity="0.5"/></g></symbol>
+<symbol id="part-gpu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="12" y="34" width="96" height="52" rx="6" fill="var(--accent)" fill-opacity="0.15"/><circle cx="40" cy="60" r="14" stroke="var(--accent2)"/><circle cx="80" cy="60" r="14" stroke="var(--accent2)"/><circle cx="40" cy="60" r="3" fill="currentColor"/><circle cx="80" cy="60" r="3" fill="currentColor"/><path d="M20 86v10M30 86v10" stroke-linecap="round"/></g></symbol>
+<symbol id="part-ssd" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="18" y="48" width="84" height="24" rx="4" fill="var(--accent)" fill-opacity="0.15"/><rect x="30" y="54" width="44" height="12" rx="2" stroke="var(--accent2)"/><path d="M96 54v12M18 60h-6" stroke-linecap="round"/></g></symbol>
+<symbol id="part-cooler" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="22" width="80" height="20" rx="4" fill="var(--accent)" fill-opacity="0.15"/><path d="M26 42v6M34 42v6M42 42v6M50 42v6M58 42v6M66 42v6M74 42v6M82 42v6M90 42v6" stroke-linecap="round"/><circle cx="60" cy="80" r="22" stroke="var(--accent2)"/><circle cx="60" cy="80" r="5" fill="currentColor"/><path d="M60 58a22 22 0 0 1 16 12M60 102a22 22 0 0 1-16-12" stroke-opacity="0.5"/></g></symbol>
+<symbol id="part-case" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="32" y="14" width="56" height="92" rx="5" fill="var(--accent)" fill-opacity="0.12"/><line x1="60" y1="14" x2="60" y2="106" stroke-opacity="0.4"/><circle cx="74" cy="40" r="9" stroke="var(--accent2)"/><circle cx="74" cy="66" r="9" stroke="var(--accent2)"/><path d="M40 24h6M40 30h10" stroke-linecap="round"/></g></symbol>
+<symbol id="part-psu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="36" width="80" height="48" rx="5" fill="var(--accent)" fill-opacity="0.15"/><circle cx="44" cy="60" r="14" stroke="var(--accent2)"/><path d="M44 50v20M34 60h20" stroke-opacity="0.5"/><rect x="74" y="50" width="18" height="8" rx="2"/><rect x="74" y="64" width="18" height="8" rx="2"/></g></symbol>
+</defs></svg>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="badge">◆ Claude Opus 4.8 · 深度技術版</span>
+    <h1>電腦升級完整分析報告<br><span style="font-size:24px;font-weight:600;color:var(--muted)">i5-12400 + RTX 4060 Ti <span class="arrow">→</span> R7 7700 + RTX 5070 Ti</span></h1>
+    <p class="sub">針對原價屋估價單的全平台升級評估：用料、品牌梯隊、1080p 遊戲、ComfyUI 生圖與 LoRA 訓練、多工掛機，逐項拆解並給出誠實結論。</p>
+    <div class="meta">
+      <span class="chip">平台 <b>Intel B760 → AMD AM5</b></span>
+      <span class="chip">VRAM <b>8GB → 16GB</b></span>
+      <span class="chip">記憶體 <b>32GB DDR4 → 48GB DDR5</b></span>
+      <span class="chip price-tag" style="border-color:var(--accent);color:var(--accent2)">總價 <b>NT$ 83,458</b></span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#spec">規格對比</a><a href="#parts">零件用料</a><a href="#mb">主機板梯隊</a>
+    <a href="#gpu">顯卡梯隊</a><a href="#game">遊戲效能</a><a href="#ai">AI 生圖</a>
+    <a href="#models">可用模型</a><a href="#multi">多工</a><a href="#verdict">總結評分</a>
+  </nav>
+
+  <!-- 規格 -->
+  <section id="spec">
+    <h2><span class="n">01</span>新舊配置總覽</h2>
+    <p class="lead">整套屬於跨世代升級：CPU 換代、平台從 DDR4 升 DDR5、顯示記憶體翻倍、SSD 進入 PCIe Gen5。</p>
+    <div class="grid">
+      <div class="card"><svg class="ico"><use href="#part-cpu"/></svg><div class="ttl">處理器 CPU</div><div class="model">AMD Ryzen 7 7700 MPK</div><ul><li>Zen 4 · 5nm · 8C/16T</li><li>3.8 / 5.3 GHz · 65W</li></ul><div class="old"><s>舊：Intel i5-12400 6C/12T</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-mobo"/></svg><div class="ttl">主機板</div><div class="model">技嘉 B850 AORUS STEALTH</div><ul><li>背插式 ATX · 14+2+2 相</li><li>5GbE + Wi-Fi 7 · 雙 Gen5 M.2</li></ul><div class="old"><s>舊：MSI PRO B760M-A D4</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-ram"/></svg><div class="ttl">記憶體</div><div class="model">Biwin Black Opal 48GB</div><ul><li>DDR5-6000 CL28 (24×2)</li><li>真實延遲 ~9.33ns</li></ul><div class="old"><s>舊：32GB DDR4-3200</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-gpu"/></svg><div class="ttl">顯示卡</div><div class="model">技嘉 RTX 5070 Ti GAMING OC</div><ul><li>Blackwell · 16GB GDDR7</li><li>8960 CUDA · Boost 2588MHz</li></ul><div class="old"><s>舊：RTX 4060 Ti 8GB</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-ssd"/></svg><div class="ttl">固態硬碟</div><div class="model">致態 TiPro9000 1TB</div><ul><li>PCIe Gen5 · 14,000 MB/s</li><li>2GB DRAM Cache</li></ul><div class="old"><s>舊：美光 P5 Plus Gen4</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-cooler"/></svg><div class="ttl">散熱器</div><div class="model">ID-COOLING FX360 TD</div><ul><li>360mm 一體式水冷</li><li>壓 65W 7700 綽綽有餘</li></ul><div class="old"><s>舊：原廠/入門空冷</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-case"/></svg><div class="ttl">機殼</div><div class="model">全漢 M580 PRO-BA</div><ul><li>背插分艙 · 全景玻璃</li><li>支援 360 水冷 / ATX</li></ul><div class="old"><s>舊：未知機殼</s></div></div>
+      <div class="card"><svg class="ico"><use href="#part-psu"/></svg><div class="ttl">電源供應器</div><div class="model">微星 MPG A850GS</div><ul><li>850W 金牌全模組</li><li>ATX 3.1 · 原生 12V-2×6</li></ul><div class="old"><s>舊：650W</s></div></div>
+    </div>
+  </section>
+
+  <!-- 零件用料 -->
+  <section id="parts">
+    <h2><span class="n">02</span>各零件用料分析</h2>
+    <p class="lead">逐項評估用料與定位，並標註值得注意的細節（含保固陷阱）。</p>
+
+    <h3>CPU — AMD R7 7700 MPK</h3>
+    <p>Zen 4、5nm、8C/16T。相較 i5-12400，多核效能大幅領先約 <span class="up">60–80%</span>，單核也快約 15–20%。65W TDP 能效比優秀，AM5 腳位官方承諾支援至 2027 年以上，未來可直升 Ryzen 9000（如 9800X3D）。</p>
+    <div class="note warn"><span class="k">⚠ 保固提醒</span><div>清單為 <b>MPK 代理版</b>（含風扇），保固通常為三年代理保，而非原廠五年保。若在意保固可考慮 BOX 版。</div></div>
+
+    <h3>主機板 — 技嘉 B850 AORUS STEALTH（背插式）</h3>
+    <p>14+2+2 相、單相 80A 供電，對 65W 的 7700 完全綽綽有餘，日後上 R9 9950X 也穩。亮點為 <b>背插式設計</b>（走線極簡）、<b>5GbE</b> 有線網卡、<b>雙 PCIe Gen5 M.2</b>。Wi-Fi 7 目前僅 160MHz 頻寬（半殘版）。$7,990 在背插 B850 中屬中高水準，用料對得起價格。</p>
+
+    <h3>記憶體 — Biwin Black Opal DW100 RGB 48GB (24×2) DDR5-6000 CL28</h3>
+    <p>SK Hynix 顆粒、10 層 PCB、2mm 鋁合金散熱片。CL28 在 6000MT/s 級別屬優秀（真實延遲約 9.33ns）。48GB 非標密度、雙面 Rank，對 AI 生圖與多工掛機比 32GB 更有餘裕，可作 VRAM 溢出緩衝（CPU offloading）。</p>
+    <div class="note"><span class="k">價格</span><div>$16,599 在 48GB DDR5-6000 套裝中偏貴，但 48GB 非標容量選擇較少，溢價可理解。</div></div>
+
+    <h3>顯示卡 — 技嘉 RTX 5070 Ti GAMING OC 16G</h3>
+    <p>GB203（Blackwell, TSMC 4N）、8960 CUDA、16GB GDDR7 256-bit 28Gbps、Boost 2588MHz（OC +5.5%）、TDP 300W。WINDFORCE 散熱 + Hawk 風扇 + 蒸氣腔均熱板 + 伺服器級導熱凝膠 + 雙 BIOS。在技嘉產品線中排第二（僅次 AERO OC），散熱明顯優於入門 WINDFORCE/EAGLE。</p>
+
+    <h3>SSD — 致態 TiPro9000 1TB (Gen5)</h3>
+    <p>長江存儲首款 PCIe 5.0 旗艦，實測順讀寫可達 ~14,200 / 13,600 MB/s，跑滿 Gen5 頻寬，配 2GB LPDDR4 獨立 DRAM Cache。較舊的 P5 Plus（Gen4 ~6,600 MB/s）約快 2 倍。$6,499 在 Gen5 1TB 中極具競爭力。</p>
+
+    <div class="grid" style="margin-top:8px">
+      <div class="card"><svg class="ico"><use href="#part-cooler"/></svg><div class="ttl">ID-COOLING FX360 TD</div><div class="model">360 AIO · $2,290</div><ul><li>三 120mm 風扇</li><li>壓 65W PBO 全開也輕鬆</li><li>未來可應對 9950X</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-case"/></svg><div class="ttl">全漢 M580 PRO-BA</div><div class="model">背插分艙 · $3,290</div><ul><li>全景曲面玻璃</li><li>支援 360 水冷 / ATX</li><li>外觀中規中矩偏好看</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-psu"/></svg><div class="ttl">微星 MPG A850GS</div><div class="model">850W 金牌 · $3,290</div><ul><li>全模組 · ATX 3.1</li><li>整機 ~507W，約 60% 負載</li><li>原生 12V-2×6 直供</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 主機板梯隊 -->
+  <section id="mb">
+    <h2><span class="n">03</span>主機板三大品牌等級比較（B850）</h2>
+    <p class="lead">華碩 / 微星 / 技嘉同晶片組對應等級。你的選擇落在「中高階」區間。</p>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>等級</th><th>技嘉</th><th>微星</th><th>華碩</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill n">入門 ~$3–5K</span></td><td>B850M DS3H<br>8+2+1 相</td><td>PRO B850M-A WiFi<br>10+2+1 相</td><td>PRIME B850M-A<br>8+1+1 相</td></tr>
+        <tr><td><span class="pill g">中高階 ★你的選擇</span></td><td class="star"><b>B850 AORUS STEALTH</b><br>14+2+2 · 背插 · 5GbE · ~$7,990</td><td>MAG B850 TOMAHAWK<br>16+2+1 · 口碑王 · ~$6,990</td><td>TUF B850-PLUS<br>12+2+1 · 軍規 · ~$6,490</td></tr>
+        <tr><td><span class="pill w">旗艦 ~$10K+</span></td><td>X870E AORUS MASTER<br>16+2+2 110A</td><td>MEG X870E ACE<br>22+2+1 110A</td><td>ROG STRIX X870E-E<br>18+2+2 110A</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">結論</span><div>驅動 R7 7700 時三者差異極小，真正差異在<b>擴充性與附加功能</b>。STEALTH 的背插＋5GbE＋雙 Gen5 M.2 是亮點；TOMAHAWK 供電最強、社群口碑最高；TUF 勝在品牌信任。旗艦 X870E 對 7700 完全過剩。</div></div>
+  </section>
+
+  <!-- 顯卡梯隊 -->
+  <section id="gpu">
+    <h2><span class="n">04</span>顯示卡三大品牌 RTX 5070 Ti 等級比較</h2>
+    <p class="lead">同一顆 GB203 核心，不同等級效能差異其實只有 <span class="up">1–3%</span>，差別在散熱、噪音與保固。</p>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>品牌 / 型號</th><th>Boost</th><th>散熱 / 尺寸</th><th>特色</th><th>參考價</th></tr></thead>
+      <tbody>
+        <tr><td>技嘉 WINDFORCE OC SFF</td><td>2497MHz</td><td>SFF 短卡</td><td>入門</td><td>~$29,990</td></tr>
+        <tr><td>技嘉 EAGLE OC SFF</td><td>2542MHz</td><td>SFF</td><td>中階</td><td>~$30,990</td></tr>
+        <tr class="star"><td><b>技嘉 GAMING OC ★本單</b></td><td><b>2588MHz</b></td><td>34cm / 3 槽</td><td>Hawk 風扇、蒸氣腔</td><td><b>~$36,990</b></td></tr>
+        <tr><td>技嘉 AERO OC</td><td>~2600MHz</td><td>34cm / 3 槽</td><td>白色外觀</td><td>~$38,090</td></tr>
+        <tr><td>微星 GAMING TRIO OC</td><td>2572MHz</td><td>33.8cm</td><td>TORX 5.0 · 五年保</td><td>~$32,990</td></tr>
+        <tr><td>華碩 TUF O16G</td><td>2610MHz</td><td>32.9cm</td><td>軍規 · 三年保</td><td>~$32,990</td></tr>
+        <tr><td>華碩 ROG STRIX</td><td>更高</td><td>旗艦級</td><td>ROG 旗艦 · 五年保</td><td>~$38,000+</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note good"><span class="k">建議</span><div>GAMING OC 散熱用料良好，與丐版效能差約 2–3% 但靜音體驗明顯更優。若預算吃緊，微星 VENTUS 或華碩 PRIME（~$26,990）可省約 $10,000，遊戲差距 &lt;3%。</div></div>
+  </section>
+
+  <!-- 遊戲 -->
+  <section id="game">
+    <h2><span class="n">05</span>1080p 遊戲效能分析</h2>
+    <div class="stats">
+      <div class="stat"><div class="big">+43%</div><div class="lbl">GPU 綜合效能</div></div>
+      <div class="stat"><div class="big">+70%</div><div class="lbl">CPU 多核</div></div>
+      <div class="stat"><div class="big">+88%</div><div class="lbl">記憶體頻寬</div></div>
+      <div class="stat"><div class="big">+100%</div><div class="lbl">VRAM 容量</div></div>
+    </div>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>遊戲 / 設定</th><th>4060 Ti 8G</th><th>5070 Ti 16G</th><th>提升</th></tr></thead>
+      <tbody>
+        <tr><td>3A · 1080p Ultra（光追關）</td><td>~70–80 fps</td><td>~120–140 fps</td><td class="up">+60–75%</td></tr>
+        <tr><td>3A · 1080p Ultra + RT</td><td>~35–45 fps</td><td>~70–85 fps</td><td class="up">+80–100%</td></tr>
+        <tr><td>VALORANT · 全高</td><td>~300–400 fps</td><td>~500–700+ fps</td><td class="up">+60–75%</td></tr>
+        <tr><td>Cities Skylines II · 高畫質</td><td>~25–35 fps</td><td>~40–55 fps</td><td class="up">+40–55%</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note warn"><span class="k">CPU 瓶頸</span><div>1080p 下 R7 7700 + 5070 Ti 確實有<b>輕微 CPU 瓶頸（約 5–15%）</b>。5070 Ti 定位是 1440p 甜蜜點卡，1080p 會「浪費」性能。R7 7700 非 X3D，純遊戲略遜 9800X3D。但對你「多工＋AI＋遊戲」綜合需求而言是合理均衡選擇——若改用 1440p 螢幕瓶頸幾乎無感。</div></div>
+  </section>
+
+  <!-- AI -->
+  <section id="ai">
+    <h2><span class="n">06</span>ComfyUI / AI 生圖效能分析</h2>
+    <p class="lead">這是本次升級最具價值的部分——但提升幅度要看清楚，別被誇大數字誤導。</p>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>規格</th><th>4060 Ti 8GB</th><th>5070 Ti 16GB</th><th>提升</th></tr></thead>
+      <tbody>
+        <tr><td>CUDA Cores</td><td>4,352</td><td>8,960</td><td class="up">+106%</td></tr>
+        <tr><td>Tensor Cores</td><td>136（第4代）</td><td>280（第5代）</td><td class="up">代際+數量</td></tr>
+        <tr><td>VRAM / 頻寬</td><td>8GB · 288GB/s</td><td>16GB · 896GB/s</td><td class="up">+100% / +211%</td></tr>
+      </tbody>
+    </table></div>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>工作流</th><th>目前 (4060Ti)</th><th>預估 (5070Ti)</th><th>倍率</th></tr></thead>
+      <tbody>
+        <tr><td>Z Image Turbo</td><td>~2 s/it</td><td>~0.8–1.2 s/it</td><td class="up">1.7–2.5×</td></tr>
+        <tr><td>Illustrious XL</td><td>~2 it/s</td><td>~3.5–5 it/s</td><td class="up">1.7–2.5×</td></tr>
+        <tr><td>SDXL + ControlNet + Upscale</td><td>勉強（8GB 極限）</td><td>流暢、可疊多個</td><td><span class="pill g">質變</span></td></tr>
+        <tr><td>Batch 4 張並行</td><td>OOM 不可行</td><td>可行（16GB 夠）</td><td><span class="pill g">質變</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">關鍵</span><div>真正的躍升不只是速度，而是 16GB VRAM 讓 SDXL 不再需要 <code>--lowvram</code>，並解鎖 FLUX、SD3.5 Large 等大模型。第 5 代 Tensor Core 對 FP8/FP4 有硬體加速。</div></div>
+  </section>
+
+  <!-- 模型 -->
+  <section id="models">
+    <h2><span class="n">07</span>16GB VRAM 可嘗試的新模型與 LoRA 訓練</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>模型</th><th>VRAM</th><th>4060 Ti 8GB</th><th>5070 Ti 16GB</th></tr></thead>
+      <tbody>
+        <tr><td>SDXL / Illustrious XL</td><td>~7–8GB</td><td><span class="pill w">勉強</span></td><td><span class="pill g">流暢</span></td></tr>
+        <tr><td>FLUX.1 Dev (FP16)</td><td>~12–14GB</td><td><span class="pill b">不行</span></td><td><span class="pill g">可</span></td></tr>
+        <tr><td>FLUX.2（最新）</td><td>~12–16GB</td><td><span class="pill b">不行</span></td><td><span class="pill g">可</span></td></tr>
+        <tr><td>SD 3.5 Large (8B)</td><td>~12GB</td><td><span class="pill b">不行</span></td><td><span class="pill g">可</span></td></tr>
+        <tr><td>本地 LLM（Qwen/Llama 7–14B Q4）</td><td>~5–10GB</td><td><span class="pill w">部分</span></td><td><span class="pill g">30–45 tok/s</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="note good"><span class="k">LoRA 訓練</span><div>16GB 完全可用 AI-Toolkit 訓練 SDXL / Illustrious / <b>FLUX.1 LoRA</b>（8-bit Adam + FP8 基礎模型）。SDXL LoRA 約 0.6–1.0 s/step，可用 batch 2–4 加速收斂。FLUX.2 較緊繃需開 gradient checkpointing。這是 8GB 完全做不到的分水嶺。</div></div>
+  </section>
+
+  <!-- 多工 -->
+  <section id="multi">
+    <h2><span class="n">08</span>多工掛機分析（3+ 腳本機器人 + 後台）</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>項目</th><th>舊配置</th><th>新配置</th><th>改善</th></tr></thead>
+      <tbody>
+        <tr><td>核心 / 執行緒</td><td>6C / 12T</td><td>8C / 16T</td><td class="up">+33%，排程更從容</td></tr>
+        <tr><td>系統記憶體</td><td>32GB DDR4</td><td>48GB DDR5</td><td class="up">+50% 容量 / +88% 頻寬</td></tr>
+        <tr><td>SSD 速度</td><td>Gen4 ~6.6GB/s</td><td>Gen5 ~14GB/s</td><td class="up">日誌/讀寫更快</td></tr>
+      </tbody>
+    </table></div>
+    <p>8 核 16 緒可在跑 AI 生圖的同時，留充足核心給腳本與後台；48GB 讓多開 Chrome 分頁＋多隻 Bot 不再吃緊。</p>
+  </section>
+
+  <!-- 總結 -->
+  <section id="verdict">
+    <h2><span class="n">09</span>總結與評分</h2>
+    <div class="bar"><span class="name">1080p 遊戲</span><div class="track"><div class="fill" style="width:80%"></div></div><span class="val">8/10</span></div>
+    <div class="bar"><span class="name">AI 生圖速度</span><div class="track"><div class="fill" style="width:90%"></div></div><span class="val">9/10</span></div>
+    <div class="bar"><span class="name">AI 訓練 LoRA</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">10/10</span></div>
+    <div class="bar"><span class="name">多工穩定性</span><div class="track"><div class="fill" style="width:80%"></div></div><span class="val">8/10</span></div>
+    <div class="bar"><span class="name">未來擴充</span><div class="track"><div class="fill" style="width:90%"></div></div><span class="val">9/10</span></div>
+    <div class="bar"><span class="name">性價比</span><div class="track"><div class="fill" style="width:70%"></div></div><span class="val">7/10</span></div>
+
+    <h3>可省錢方向（最多省 ~$15K–$20K）</h3>
+    <table class="tbl"><tbody>
+      <tr><td>記憶體降 32GB DDR5-6000</td><td>省 ~$8–10K</td><td class="pill w">AI 多工稍緊</td></tr>
+      <tr><td>SSD 降 Gen4（美光 T500）</td><td>省 ~$4K</td><td class="pill g">體感差異小</td></tr>
+      <tr><td>顯卡選 WINDFORCE / VENTUS</td><td>省 ~$7K</td><td class="pill g">效能差 &lt;3%</td></tr>
+      <tr><td>散熱改塔散（利民 PS120）</td><td>省 ~$800</td><td class="pill g">對 65W 足夠</td></tr>
+    </tbody></table>
+    <div class="note good"><span class="k">★ 最終建議</span><div>這是一套配置邏輯極強、非常適合「重度 AI ＋多工掛機」的均衡平台。唯一強烈建議：<b>升級到 1440p 144Hz 以上螢幕</b>，才能真正釋放 5070 Ti、並讓 CPU 瓶頸幾乎消失。</div></div>
+  </section>
+
+  <footer>
+    Claude Opus 4.8（深度技術版）· 三 AI 報告比較專案 · 產品示意圖為向量繪製，可替換為真實照片<br>
+    生成於 2026-06-15 · 數據為估算，實際以評測為準
+  </footer>
+</div>
+</body>
+</html>

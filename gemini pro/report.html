@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>電腦硬體升級深度分析 · Gemini Pro</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --panel:#ffffff; --ink:#1b2030; --muted:#5b6478; --line:#e7eaf3;
+    --g1:#4f8cff; --g2:#a855f7; --g3:#ec4899;
+    --grad:linear-gradient(120deg,var(--g1),var(--g2) 55%,var(--g3));
+    --accent:#7c5cff; --accent2:#4f8cff; --good:#15a66b; --warn:#e08a00; --bad:#e0445e;
+    --radius:18px; --shadow:0 12px 34px rgba(80,90,160,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.72;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--accent);text-decoration:none}
+  .hero{position:relative;margin:0 -22px;padding:70px 22px 48px;color:#fff;overflow:hidden;
+    background:var(--grad)}
+  .hero::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(420px 220px at 12% 10%,rgba(255,255,255,.35),transparent 60%),
+    radial-gradient(380px 200px at 90% 90%,rgba(255,255,255,.18),transparent 60%)}
+  .hero>*{position:relative;z-index:1}
+  .badge{display:inline-flex;gap:8px;align-items:center;font-size:13px;letter-spacing:.05em;
+    background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);padding:6px 14px;border-radius:999px}
+  h1{font-size:42px;line-height:1.16;margin:18px 0 12px;font-weight:800;letter-spacing:-.01em}
+  .hero .sub{font-size:17px;max-width:740px;opacity:.95}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .chip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:11px;padding:8px 14px;font-size:13px}
+  .chip b{font-weight:800}
+  nav.toc{position:sticky;top:0;z-index:9;background:rgba(246,247,251,.9);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);margin:0 -22px;padding:10px 22px;display:flex;gap:6px;overflow-x:auto}
+  nav.toc a{color:var(--muted);font-size:13px;white-space:nowrap;padding:6px 11px;border-radius:9px}
+  nav.toc a:hover{background:#fff;color:var(--accent)}
+  section{padding:48px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:27px;margin:0 0 6px;font-weight:800;display:flex;align-items:center;gap:12px}
+  h2 .emo{font-size:26px}
+  .lead{color:var(--muted);margin:0 0 24px;max-width:820px}
+  h3{font-size:18px;margin:28px 0 10px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;
+    box-shadow:var(--shadow);transition:transform .15s}
+  .card:hover{transform:translateY(-4px)}
+  .card .ico{width:62px;height:62px;color:var(--accent);display:block;margin-bottom:8px}
+  .card .ttl{font-weight:800;font-size:15px}
+  .card .model{font-size:13px;margin:2px 0 10px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+  .card ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px}
+  .card .old{margin-top:10px;font-size:12px;color:#9aa3b8;border-top:1px dashed var(--line);padding-top:8px}
+  .tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .tbl th,.tbl td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  .tbl thead th{background:var(--grad);color:#fff;font-weight:700}
+  .tbl tbody tr:nth-child(even){background:#fafbff}
+  .tbl tbody tr:hover{background:#f1f0ff}
+  .scroll{overflow-x:auto}
+  .up{color:var(--good);font-weight:800}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700}
+  .pill.g{background:#e3f7ee;color:var(--good)} .pill.w{background:#fdf0db;color:var(--warn)}
+  .pill.b{background:#fde6ea;color:var(--bad)} .pill.n{background:#eef0f6;color:var(--muted)}
+  .pill.hot{background:var(--grad);color:#fff}
+  .note{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:14px;padding:16px 18px;margin:18px 0;box-shadow:var(--shadow)}
+  .note.warn{border-left-color:var(--warn)} .note.good{border-left-color:var(--good)}
+  .note .k{font-weight:800;color:var(--accent);white-space:nowrap}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:8px 0}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center;box-shadow:var(--shadow)}
+  .stat .big{font-size:32px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .lbl{color:var(--muted);font-size:13px;margin-top:4px}
+  footer{padding:40px 0 0;color:var(--muted);font-size:13px;text-align:center}
+  @media print{nav.toc{display:none}.hero{color:#fff}section{padding:26px 0}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="part-cpu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="30" y="30" width="60" height="60" rx="6" fill="var(--accent)" fill-opacity="0.12"/><rect x="42" y="42" width="36" height="36" rx="4" stroke="var(--accent2)"/><g stroke-linecap="round"><path d="M44 30V18M56 30V18M68 30V18M76 30V18M44 90v12M56 90v12M68 90v12M76 90v12M30 44H18M30 56H18M30 68H18M30 76H18M90 44h12M90 56h12M90 68h12M90 76h12"/></g></g></symbol>
+<symbol id="part-mobo" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="14" y="14" width="92" height="92" rx="6" fill="var(--accent)" fill-opacity="0.10"/><rect x="26" y="26" width="26" height="26" rx="3" stroke="var(--accent2)"/><rect x="64" y="30" width="10" height="42" rx="2"/><rect x="78" y="30" width="10" height="42" rx="2"/><rect x="26" y="78" width="64" height="8" rx="3"/><circle cx="39" cy="64" r="3" fill="currentColor"/><circle cx="50" cy="64" r="3" fill="currentColor"/></g></symbol>
+<symbol id="part-ram" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="34" width="80" height="46" rx="4" fill="var(--accent)" fill-opacity="0.12"/><path d="M28 80v8M40 80v8M52 80v8M64 80v8M76 80v8M88 80v8" stroke-linecap="round"/><rect x="30" y="20" width="60" height="14" rx="3" fill="var(--accent2)" stroke="none" opacity="0.85"/><path d="M30 50h60M30 60h60" stroke-opacity="0.5"/></g></symbol>
+<symbol id="part-gpu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="12" y="34" width="96" height="52" rx="6" fill="var(--accent)" fill-opacity="0.12"/><circle cx="40" cy="60" r="14" stroke="var(--accent2)"/><circle cx="80" cy="60" r="14" stroke="var(--accent2)"/><circle cx="40" cy="60" r="3" fill="currentColor"/><circle cx="80" cy="60" r="3" fill="currentColor"/><path d="M20 86v10M30 86v10" stroke-linecap="round"/></g></symbol>
+<symbol id="part-ssd" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="18" y="48" width="84" height="24" rx="4" fill="var(--accent)" fill-opacity="0.12"/><rect x="30" y="54" width="44" height="12" rx="2" stroke="var(--accent2)"/><path d="M96 54v12M18 60h-6" stroke-linecap="round"/></g></symbol>
+<symbol id="part-cooler" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="22" width="80" height="20" rx="4" fill="var(--accent)" fill-opacity="0.12"/><path d="M26 42v6M34 42v6M42 42v6M50 42v6M58 42v6M66 42v6M74 42v6M82 42v6M90 42v6" stroke-linecap="round"/><circle cx="60" cy="80" r="22" stroke="var(--accent2)"/><circle cx="60" cy="80" r="5" fill="currentColor"/><path d="M60 58a22 22 0 0 1 16 12M60 102a22 22 0 0 1-16-12" stroke-opacity="0.5"/></g></symbol>
+<symbol id="part-case" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="32" y="14" width="56" height="92" rx="5" fill="var(--accent)" fill-opacity="0.10"/><line x1="60" y1="14" x2="60" y2="106" stroke-opacity="0.4"/><circle cx="74" cy="40" r="9" stroke="var(--accent2)"/><circle cx="74" cy="66" r="9" stroke="var(--accent2)"/><path d="M40 24h6M40 30h10" stroke-linecap="round"/></g></symbol>
+<symbol id="part-psu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="36" width="80" height="48" rx="5" fill="var(--accent)" fill-opacity="0.12"/><circle cx="44" cy="60" r="14" stroke="var(--accent2)"/><path d="M44 50v20M34 60h20" stroke-opacity="0.5"/><rect x="74" y="50" width="18" height="8" rx="2"/><rect x="74" y="64" width="18" height="8" rx="2"/></g></symbol>
+</defs></svg>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="badge">✦ Gemini Pro · 視覺豐富版</span>
+    <h1>電腦硬體升級深度分析報告</h1>
+    <p class="sub">12400 + 4060 Ti → 7700 + RTX 5070 Ti ✦ 從 Intel 平台躍升至 AMD 新世代背插平台，全方位拆解用料、品牌對比、遊戲、AI 生圖與訓練、多工掛機。</p>
+    <div class="meta">
+      <span class="chip">💻 平台 <b>Intel → AMD AM5 背插</b></span>
+      <span class="chip">🎨 VRAM <b>8G → 16G 翻倍</b></span>
+      <span class="chip">⚡ SSD <b>Gen4 → Gen5</b></span>
+      <span class="chip">💰 總價 <b>NT$ 83,458</b></span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#spec">規格摘要</a><a href="#parts">零件用料</a><a href="#mb">主機板對比</a>
+    <a href="#gpu">顯卡對比</a><a href="#game">遊戲效能</a><a href="#ai">AI 生圖</a>
+    <a href="#models">新模型</a><a href="#multi">多工掛機</a><a href="#verdict">購買建議</a>
+  </nav>
+
+  <section id="spec">
+    <h2><span class="emo">📋</span>新舊電腦規格對比摘要</h2>
+    <p class="lead">這是一次跨世代的平台躍升，每個核心組件都迎來實質改變。</p>
+    <div class="grid">
+      <div class="card"><svg class="ico"><use href="#part-cpu"/></svg><div class="ttl">中央處理器</div><div class="model">AMD Ryzen 7 7700 MPK</div><ul><li>8C/16T · TSMC 5nm · Zen 4</li><li>TDP 僅 65W，能耗比極高</li></ul><div class="old">舊：i5-12400 (6C/12T)</div></div>
+      <div class="card"><svg class="ico"><use href="#part-mobo"/></svg><div class="ttl">主機板</div><div class="model">技嘉 B850 AORUS STEALTH</div><ul><li>背插式 · 14+2+2 相</li><li>正面接線全移背面，極簡</li></ul><div class="old">舊：MSI PRO B760M-A D4</div></div>
+      <div class="card"><svg class="ico"><use href="#part-ram"/></svg><div class="ttl">記憶體</div><div class="model">Biwin 佰維 Black Opal 48GB</div><ul><li>DDR5-6000 CL28 超低時序</li><li>特挑 Hynix 顆粒</li></ul><div class="old">舊：32GB DDR4</div></div>
+      <div class="card"><svg class="ico"><use href="#part-gpu"/></svg><div class="ttl">顯示卡</div><div class="model">技嘉 RTX 5070 Ti GAMING OC</div><ul><li>Blackwell · 16GB VRAM</li><li>VRAM 焦慮徹底解決</li></ul><div class="old">舊：RTX 4060 Ti 8GB</div></div>
+      <div class="card"><svg class="ico"><use href="#part-ssd"/></svg><div class="ttl">固態硬碟</div><div class="model">致態 TiPro9000 1TB Gen5</div><ul><li>讀 14,000 / 寫 12,500 MB/s</li><li>獨立 DRAM 快取</li></ul><div class="old">舊：美光 P5 Plus Gen4</div></div>
+      <div class="card"><svg class="ico"><use href="#part-cooler"/></svg><div class="ttl">散熱器</div><div class="model">ID-COOLING FX360 TD</div><ul><li>360 水冷 · 冷頭數位螢幕</li><li>壓 65W 極度大材小用</li></ul><div class="old">舊：原廠/入門空冷</div></div>
+      <div class="card"><svg class="ico"><use href="#part-case"/></svg><div class="ttl">機殼</div><div class="model">全漢 M580 PRO-BA</div><ul><li>全景海景房 · 原生背插</li><li>玻璃防爆 · 空間寬敞</li></ul><div class="old">舊：舊有機殼</div></div>
+      <div class="card"><svg class="ico"><use href="#part-psu"/></svg><div class="ttl">電源供應器</div><div class="model">微星 MPG A850GS</div><ul><li>850W 金牌全模組</li><li>ATX 3.1 · 12V-2×6 不易熔</li></ul><div class="old">舊：650W</div></div>
+    </div>
+  </section>
+
+  <section id="parts">
+    <h2><span class="emo">🔍</span>第一部分 · 新菜單零件用料與設計</h2>
+    <h3>CPU — AMD Ryzen 7 7700 MPK（代理含風扇）</h3>
+    <p>TSMC 5nm、Zen 4、8 核 16 緒。MPK 為簡易包裝（附原廠風扇），內容物與盒裝相同但更實惠。預設 TDP 僅 65W，積熱比 X 版輕，能耗比極高，是 2026 年高性價比的 8 核遊戲與多工主力。</p>
+    <h3>主機板 — 技嘉 B850 AORUS STEALTH（背插式）</h3>
+    <p>技嘉次世代「背插式 Project Stealth」中高階板，<b>14+2+2 相</b>數位供電配大面積散熱裝甲，完美發揮 7700 並預留 9000 系列升級空間。所有接口（24PIN、CPU 8PIN、SATA、風扇）移至背面，正面視覺極致乾淨，大幅優化風道。</p>
+    <h3>記憶體 — Biwin Black Opal DW100 RGB 48GB (24×2) DDR5-6000 CL28</h3>
+    <p>高階發燒友級非對稱雙通道。最驚人的是 <b>CL28 超低時序</b>（一般 DDR5-6000 多為 CL30/CL36），代表篩選了特挑 Hynix A-die。低時序對 AMD 平台延遲改善極大，能顯著提升 0.1% Low 幀數。48GB 剛好填補 32GB 與 64GB 間的空白，對 AI 生圖與多工掛機是完美平衡點。</p>
+    <h3>顯示卡 — 技嘉 RTX 5070 Ti GAMING OC 16G</h3>
+    <p>Blackwell 次旗艦主力卡，風之力散熱（刀刃風扇正逆轉、純銅熱導管直觸 GPU），核心超頻至 2588MHz，固態電容＋金屬後板。<b>16GB 大顯存</b>徹底解決 4060 Ti 8GB 的 VRAM 焦慮。</p>
+    <h3>SSD — 致態 TiPro9000 1TB (PCIe Gen5)</h3>
+    <p>長江存儲 PCIe 5.1 旗艦，最新 3D TLC 顆粒，讀 14,000 / 寫 12,500 MB/s，配獨立 DRAM 快取。附可拆式厚重散熱片，用料市面頂級。</p>
+    <h3>散熱、機殼與電源</h3>
+    <p><b>ID-COOLING FX360 TD</b>：冷頭自帶數位監控螢幕，壓 65W 的 7700 屬「極度大材小用」，確保低溫安靜。<b>全漢 M580 PRO-BA</b>：原生支援背插，鋼板厚實、玻璃防爆，完美契合 STEALTH。<b>微星 A850GS</b>：金牌全模組，通過 ATX 3.1 / PCIe 5.1，全日系 105°C 電容，12V-2×6 接口更安全，10 年保固。</p>
+  </section>
+
+  <section id="mb">
+    <h2><span class="emo">📊</span>第二部分 · 三大品牌等級對比</h2>
+    <h3>B850 主機板系列</h3>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>品牌</th><th>背插/旗艦代表</th><th>主力高階</th><th>價格區間</th></tr></thead>
+      <tbody>
+        <tr><td><b>華碩</b></td><td>ROG STRIX B850-F / TUF BTF</td><td>TUF B850-PLUS（12+2+1）</td><td>$7,500–8,990</td></tr>
+        <tr style="background:#f1f0ff"><td><b>技嘉 ★本單</b></td><td><b>B850 AORUS STEALTH</b>（14+2+2 背插）</td><td>B850 AORUS ELITE AX</td><td>$6,990–7,990</td></tr>
+        <tr><td><b>微星</b></td><td>MPG CARBON / PROJECT ZERO</td><td>MAG B850 TOMAHAWK（戰斧）</td><td>$7,200–8,700</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">效能差異</span><div>同 CPU 下主機板對純運算影響 &lt; 2%，差異在超頻穩定性、PCIe 通道分配與背插美觀度。你選的 STEALTH 在背插美學與供電平衡上是頂級選擇。</div></div>
+
+    <h3>RTX 5070 Ti 顯示卡三大梯隊</h3>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>品牌</th><th>頂級旗艦</th><th>主力核心</th><th>入門普及</th></tr></thead>
+      <tbody>
+        <tr><td><b>華碩</b></td><td>ROG Strix / ProArt</td><td>TUF Gaming</td><td>Dual / Prime</td></tr>
+        <tr style="background:#f1f0ff"><td><b>技嘉</b></td><td>AORUS Master（超級雕）</td><td><b>GAMING OC（魔鷹 ★本單）</b></td><td>Eagle / Windforce</td></tr>
+        <tr><td><b>微星</b></td><td>SUPRIM X（超龍）</td><td>GAMING X TRIO（魔龍）</td><td>Ventus 3X（萬圖師）</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note good"><span class="k">✨ 本單選擇</span><div>主力核心（GAMING OC）採常規強化供電、三風扇、雙 BIOS，效能與旗艦僅差 <b>1–3%</b>（體感無解），散熱優異、壽命長，是聰明消費者的首選。旗艦款貴 $4,000–7,000 但性價比低；入門款噪音溫度略高。</div></div>
+  </section>
+
+  <section id="game">
+    <h2><span class="emo">🎮</span>第三部分 · 1080p 遊戲與 CPU 瓶頸</h2>
+    <p class="lead">1080p 特效全開下，這次升級堪稱「毀滅性提升」。</p>
+    <div class="stats">
+      <div class="stat"><div class="big">+120~150%</div><div class="lbl">3A 大作純效能</div></div>
+      <div class="stat"><div class="big">550~700+</div><div class="lbl">VALORANT FPS</div></div>
+      <div class="stat"><div class="big">+60%</div><div class="lbl">天際線 0.1% Low</div></div>
+    </div>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>遊戲類型</th><th>舊（4060Ti 8G）</th><th>新（5070Ti 16G）</th><th>提升</th></tr></thead>
+      <tbody>
+        <tr><td>3A 大作（賽博/悟空）</td><td>60–80 FPS（爆 VRAM 掉幀）</td><td>150+ FPS（光追 120+）</td><td class="up">+120–150%</td></tr>
+        <tr><td>特戰英豪 Valorant</td><td>280–350 FPS</td><td>550–700+ FPS</td><td class="up">+80–100%</td></tr>
+        <tr><td>大都市：天際線</td><td>10 萬人口嚴重掉幀</td><td>模擬速度大增、卡頓消失</td><td class="up">+60%（0.1% Low）</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note warn"><span class="k">⚠ CPU 瓶頸</span><div>1080p 下必定產生 CPU 瓶頸：5070 Ti 實為 2K/4K 卡，渲染一幀極短會把壓力回傳 CPU，可能出現 <b>GPU 使用率僅 60–70%</b>。<b>強烈建議升級 2K 144Hz 或 4K 螢幕</b>，使用率回升 99%，徹底釋放怪獸級效能。</div></div>
+  </section>
+
+  <section id="ai">
+    <h2><span class="emo">🤖</span>第四部分 · AI 生圖 (ComfyUI) 與 LoRA 訓練</h2>
+    <p class="lead">此次升級最震撼、最具價值的地方。你的 4060 Ti 8G 在現代複雜工作流中正嚴重窒息。</p>
+    <div class="note"><span class="k">為什麼以前慢？</span><div>Z-Image-Turbo + Qwen 4B 總需求達 9–10GB，超過 8GB 後系統被迫開啟「共享系統記憶體」，把 1–2GB 模型丟到慢速 DDR4（~50GB/s vs 顯存 ~288GB/s），來回 PCIe 跨界讀取就是 2s/it 的根本原因。</div></div>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>工作流模型</th><th>舊速度</th><th>新速度</th><th>提升倍率</th></tr></thead>
+      <tbody>
+        <tr><td>Z-Image-Turbo + Qwen 4B</td><td>~2 s/it（卡 VRAM）</td><td>~0.05–0.1 s/it（FP4 硬體加速）</td><td><span class="pill hot">20倍+</span></td></tr>
+        <tr><td>Illustrious XL (SDXL 衍生)</td><td>~2 it/s</td><td>~8–12+ it/s</td><td class="up">4–6 倍</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note good"><span class="k">🚀 躍升關鍵</span><div>16GB VRAM 讓 9–10GB 工作流 100% 塞進顯存，完全不用共享記憶體；Blackwell 第 5 代 Tensor Core 對 FP4/FP8 量化模型有<b>晶片原生加速</b>。<br><small style="color:#9aa3b8">※ 0.05 s/it 為理想峰值估計，實際視工作流與步數而定。</small></div></div>
+    <h3>可否使用 AI-Toolkit 訓練 LoRA？可以，非常輕鬆！</h3>
+    <p>SDXL / Illustrious XL LoRA：16GB 下可用 AdamW、1024×1024 高質量訓練，速度飛快。FLUX.1 LoRA：以前 8G 絕無可能，現在配 8-bit Adam 與 FP8 基礎模型，可完全在本地端順利訓練——這是創作者的核心分水嶺。</p>
+  </section>
+
+  <section id="models">
+    <h2><span class="emo">🎨</span>新電腦能嘗試的新模型</h2>
+    <div class="grid">
+      <div class="card"><div class="ttl">FLUX.1 (Dev / Schnell)</div><div class="model">~12–14GB</div><ul><li>最強開源生圖模型</li><li>細節、文字、手部完勝 SDXL</li><li>可跑 FP8 版享極致畫質</li></ul></div>
+      <div class="card"><div class="ttl">T5-XXL 文字編碼器</div><div class="model">FP16 / FP8</div><ul><li>理解極複雜長 Prompt</li><li>生圖不再漏關鍵字</li></ul></div>
+      <div class="card"><div class="ttl">SD3.5 Large (8B)</div><div class="model">~12GB</div><ul><li>16G 輕鬆吃下</li><li>可同開多個 ControlNet</li></ul></div>
+    </div>
+  </section>
+
+  <section id="multi">
+    <h2><span class="emo">⚙️</span>第五部分 · 多工處理與後台掛機</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>面向</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><b>核心調配</b></td><td>8 個全效能大核，可固定 2 核（4 緒）給後台腳本與系統雜務，剩 6 核 12 緒留給遊戲/AI，做到背景零感掛機。</td></tr>
+        <tr><td><b>記憶體解放</b></td><td>48GB 提供額外 16GB 緩衝，可多開數十個 Chrome 分頁、掛更多機器人；DDR5-6000 高頻寬加快腳本數據吞吐。</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="verdict">
+    <h2><span class="emo">💡</span>總結與購買建議</h2>
+    <p>原價屋這張 <b>NT$ 83,458</b> 估價單，用料與配置邏輯都極其強悍，非常適合你的重度 AI 工作流與多工掛機需求。</p>
+    <div class="note good"><span class="k">✓ 優點</span><div>背插美學極致乾淨、5070 Ti 16G 帶來 AI 生圖質變、Gen5 SSD 讀寫極速、CL28 時序極致。</div></div>
+    <div class="note warn"><span class="k">溫馨提醒</span><div>① <b>強烈建議升級螢幕</b>：用這台跑 1080p 就像把法拉利開在菜市場，換 2K 144Hz / 4K 才能發揮全力。<br>② <b>注意背插相容性</b>：本單機殼與主機板完美搭配，但未來換機殼務必確認標註「支援背插主機板」。</div></div>
+  </section>
+
+  <footer>
+    Gemini Pro（視覺豐富版）· 三 AI 報告比較專案 · 產品示意圖為向量繪製，可替換為真實照片<br>
+    生成於 2026-06-15 · 數據為估算，部分為理想峰值，實際以評測為準
+  </footer>
+</div>
+</body>
+</html>

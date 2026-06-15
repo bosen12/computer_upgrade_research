@@ -1,4 +1,19 @@
-# 研究：12400 + RTX 4060 Ti 升級至 R7 7700 + RTX 5070 Ti 分析
+<div align="center">
+
+# 🖥️ 12400 + RTX 4060 Ti → R7 7700 + RTX 5070 Ti 升級分析
+
+**◇ ChatGPT · 簡潔清爽版**
+
+![CPU](https://img.shields.io/badge/CPU-Ryzen_7_7700-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
+![GPU](https://img.shields.io/badge/GPU-RTX_5070_Ti_16G-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
+![RAM](https://img.shields.io/badge/RAM-48GB_DDR5--6000_CL28-7A5CFF?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-AMD_AM5-orange?style=for-the-badge)
+
+📄 另有精美版本：[**HTML 報告**](report.html) ｜ [**PDF 報告**](report.pdf)
+
+</div>
+
+---
 
 > **目前配備** - CPU：Intel Core i5-12400 - GPU：RTX 4060 Ti 8GB -
 > RAM：DDR4 32GB (16×2) - 主機板：MSI PRO B760M-A WIFI DDR4 -
@@ -15,7 +30,7 @@
 
 ## CPU：Ryzen 7 7700
 
--   8C16T，比12400多2核心8執行緒
+-   8C16T，比12400多2核心4執行緒
 -   多工、AI、生圖、背景程式提升明顯
 -   遊戲平均提升約15\~30%，CPU密集遊戲更高
 

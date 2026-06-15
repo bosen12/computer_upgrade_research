@@ -1,4 +1,21 @@
+<div align="center">
+
 # 電腦升級完整分析報告
+
+### i5-12400 + RTX 4060 Ti → R7 7700 + RTX 5070 Ti
+
+**◆ Claude Opus 4.8 · 深度技術版**
+
+![CPU](https://img.shields.io/badge/CPU-Ryzen_7_7700-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
+![GPU](https://img.shields.io/badge/GPU-RTX_5070_Ti_16G-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
+![VRAM](https://img.shields.io/badge/VRAM-8G_→_16G-D97757?style=for-the-badge)
+![Price](https://img.shields.io/badge/總價-NT$_83,458-D97757?style=for-the-badge)
+
+📄 另有精美版本：[**HTML 報告**](report.html) ｜ [**PDF 報告**](report.pdf)
+
+</div>
+
+---
 
 ## 📋 新舊配置總覽
 

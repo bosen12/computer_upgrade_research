@@ -1,4 +1,21 @@
-# 電腦硬體升級深度分析報告 (12400+4060Ti → 7700+5070Ti)
+<div align="center">
+
+# ✦ 電腦硬體升級深度分析報告
+
+### 12400 + 4060Ti → 7700 + RTX 5070Ti
+
+**✦ Gemini Pro · 視覺豐富版**
+
+![CPU](https://img.shields.io/badge/CPU-Ryzen_7_7700-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
+![GPU](https://img.shields.io/badge/GPU-RTX_5070_Ti_16G-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
+![RAM](https://img.shields.io/badge/RAM-48GB_DDR5--6000_CL28-7A5CFF?style=for-the-badge)
+![Price](https://img.shields.io/badge/總價-NT$_83,458-EC4899?style=for-the-badge)
+
+📄 另有精美版本：[**HTML 報告**](report.html) ｜ [**PDF 報告**](report.pdf)
+
+</div>
+
+---
 
 這份報告針對你從現有的 Intel 平台（12400 + 4060 Ti 8G）升級至原價屋估價單中的 AMD 新世代背插平台（7700 + RTX 5070 Ti 16G）進行全方位的用料分析、品牌對比、遊戲效能、AI 生圖與訓練、以及多工處理評估。
 

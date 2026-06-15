@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>升級分析：12400+4060Ti → 7700+5070Ti · ChatGPT</title>
+<style>
+  :root{
+    --bg:#ffffff; --soft:#f7f9f8; --ink:#1f2328; --muted:#5e6b66; --line:#e6ece9;
+    --accent:#10a37f; --accent2:#0e8c6d; --accentbg:#e9f7f2; --good:#10a37f; --warn:#c98a00; --bad:#d6455d;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.75;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--accent);text-decoration:none}
+  .hero{padding:72px 0 36px}
+  .badge{display:inline-flex;gap:8px;align-items:center;font-size:13px;letter-spacing:.04em;
+    color:var(--accent2);background:var(--accentbg);border:1px solid #cdeee2;padding:6px 14px;border-radius:999px;font-weight:600}
+  h1{font-size:38px;line-height:1.2;margin:18px 0 12px;font-weight:800;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:17px;max-width:680px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .chip{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 13px;font-size:13px;color:var(--muted)}
+  .chip b{color:var(--ink)}
+  nav.toc{position:sticky;top:0;z-index:9;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);margin:0 -22px;padding:10px 22px;display:flex;gap:4px;overflow-x:auto}
+  nav.toc a{color:var(--muted);font-size:13px;white-space:nowrap;padding:6px 11px;border-radius:8px}
+  nav.toc a:hover{background:var(--accentbg);color:var(--accent2)}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:25px;margin:0 0 6px;font-weight:800;display:flex;align-items:baseline;gap:10px}
+  h2 .n{font-size:13px;color:var(--accent);font-weight:700}
+  .lead{color:var(--muted);margin:0 0 22px;max-width:720px}
+  h3{font-size:17px;margin:26px 0 8px;color:var(--accent2)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:16px;transition:border-color .15s,box-shadow .15s}
+  .card:hover{border-color:var(--accent);box-shadow:0 6px 20px rgba(16,163,127,.08)}
+  .card .ico{width:54px;height:54px;color:var(--accent);display:block;margin-bottom:6px}
+  .card .ttl{font-weight:700;font-size:14px}
+  .card .model{color:var(--accent2);font-size:12.5px;margin:2px 0 8px;font-weight:600}
+  .card ul{margin:0;padding-left:17px;color:var(--muted);font-size:13px}
+  .tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  .tbl th,.tbl td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line)}
+  .tbl thead th{background:var(--soft);color:var(--ink);font-weight:700;border-bottom:2px solid var(--accent)}
+  .tbl tbody tr:hover{background:var(--accentbg)}
+  .scroll{overflow-x:auto}
+  .up{color:var(--good);font-weight:700}
+  .note{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:12px;padding:15px 18px;margin:18px 0}
+  .note .k{font-weight:800;color:var(--accent2);margin-right:8px}
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{padding:8px 0 8px 26px;position:relative;border-bottom:1px solid var(--line);color:var(--muted)}
+  ul.clean li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:800}
+  ul.clean li b{color:var(--ink)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .tag{background:var(--accentbg);color:var(--accent2);border-radius:8px;padding:5px 11px;font-size:13px;font-weight:600}
+  footer{padding:36px 0 0;color:var(--muted);font-size:13px;text-align:center}
+  @media print{nav.toc{display:none}section{padding:26px 0}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="part-cpu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="30" y="30" width="60" height="60" rx="6" fill="var(--accent)" fill-opacity="0.10"/><rect x="42" y="42" width="36" height="36" rx="4" stroke="var(--accent2)"/><g stroke-linecap="round"><path d="M44 30V18M56 30V18M68 30V18M76 30V18M44 90v12M56 90v12M68 90v12M76 90v12M30 44H18M30 56H18M30 68H18M30 76H18M90 44h12M90 56h12M90 68h12M90 76h12"/></g></g></symbol>
+<symbol id="part-mobo" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="14" y="14" width="92" height="92" rx="6" fill="var(--accent)" fill-opacity="0.08"/><rect x="26" y="26" width="26" height="26" rx="3" stroke="var(--accent2)"/><rect x="64" y="30" width="10" height="42" rx="2"/><rect x="78" y="30" width="10" height="42" rx="2"/><rect x="26" y="78" width="64" height="8" rx="3"/><circle cx="39" cy="64" r="3" fill="currentColor"/><circle cx="50" cy="64" r="3" fill="currentColor"/></g></symbol>
+<symbol id="part-ram" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="34" width="80" height="46" rx="4" fill="var(--accent)" fill-opacity="0.10"/><path d="M28 80v8M40 80v8M52 80v8M64 80v8M76 80v8M88 80v8" stroke-linecap="round"/><rect x="30" y="20" width="60" height="14" rx="3" fill="var(--accent2)" stroke="none" opacity="0.85"/><path d="M30 50h60M30 60h60" stroke-opacity="0.5"/></g></symbol>
+<symbol id="part-gpu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="12" y="34" width="96" height="52" rx="6" fill="var(--accent)" fill-opacity="0.10"/><circle cx="40" cy="60" r="14" stroke="var(--accent2)"/><circle cx="80" cy="60" r="14" stroke="var(--accent2)"/><circle cx="40" cy="60" r="3" fill="currentColor"/><circle cx="80" cy="60" r="3" fill="currentColor"/><path d="M20 86v10M30 86v10" stroke-linecap="round"/></g></symbol>
+<symbol id="part-ssd" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="18" y="48" width="84" height="24" rx="4" fill="var(--accent)" fill-opacity="0.10"/><rect x="30" y="54" width="44" height="12" rx="2" stroke="var(--accent2)"/><path d="M96 54v12M18 60h-6" stroke-linecap="round"/></g></symbol>
+<symbol id="part-cooler" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="22" width="80" height="20" rx="4" fill="var(--accent)" fill-opacity="0.10"/><path d="M26 42v6M34 42v6M42 42v6M50 42v6M58 42v6M66 42v6M74 42v6M82 42v6M90 42v6" stroke-linecap="round"/><circle cx="60" cy="80" r="22" stroke="var(--accent2)"/><circle cx="60" cy="80" r="5" fill="currentColor"/><path d="M60 58a22 22 0 0 1 16 12M60 102a22 22 0 0 1-16-12" stroke-opacity="0.5"/></g></symbol>
+<symbol id="part-case" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="32" y="14" width="56" height="92" rx="5" fill="var(--accent)" fill-opacity="0.08"/><line x1="60" y1="14" x2="60" y2="106" stroke-opacity="0.4"/><circle cx="74" cy="40" r="9" stroke="var(--accent2)"/><circle cx="74" cy="66" r="9" stroke="var(--accent2)"/><path d="M40 24h6M40 30h10" stroke-linecap="round"/></g></symbol>
+<symbol id="part-psu" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="36" width="80" height="48" rx="5" fill="var(--accent)" fill-opacity="0.10"/><circle cx="44" cy="60" r="14" stroke="var(--accent2)"/><path d="M44 50v20M34 60h20" stroke-opacity="0.5"/><rect x="74" y="50" width="18" height="8" rx="2"/><rect x="74" y="64" width="18" height="8" rx="2"/></g></symbol>
+</defs></svg>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="badge">◇ ChatGPT · 簡潔清爽版</span>
+    <h1>12400 + RTX 4060 Ti<br>升級至 R7 7700 + RTX 5070 Ti 分析</h1>
+    <p class="sub">重點式拆解各零件、1080p 遊戲、AI 生圖與多工能力——快速看完、抓到結論。</p>
+    <div class="meta">
+      <span class="chip">CPU <b>i5-12400 → R7 7700</b></span>
+      <span class="chip">GPU <b>4060 Ti 8G → 5070 Ti 16G</b></span>
+      <span class="chip">RAM <b>32G DDR4 → 48G DDR5</b></span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#parts">零件分析</a><a href="#mb">主機板</a><a href="#gpu">顯示卡</a>
+    <a href="#game">遊戲</a><a href="#ai">AI 生圖</a><a href="#models">可用模型</a>
+    <a href="#lora">LoRA 訓練</a><a href="#multi">多工</a><a href="#sum">總結</a>
+  </nav>
+
+  <section id="parts">
+    <h2><span class="n">1.</span>各零件分析</h2>
+    <div class="grid">
+      <div class="card"><svg class="ico"><use href="#part-cpu"/></svg><div class="ttl">CPU</div><div class="model">Ryzen 7 7700</div><ul><li>8C16T，比 12400 多 2 核心</li><li>多工/AI/生圖提升明顯</li><li>遊戲平均 +15~30%</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-mobo"/></svg><div class="ttl">主機板</div><div class="model">B850 AORUS STEALTH</div><ul><li>14+2+2 相供電</li><li>5GbE + Wi-Fi 7 · PCIe 5.0</li><li>可升級 Zen5/Zen6</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-ram"/></svg><div class="ttl">記憶體</div><div class="model">DDR5-6000 CL28 48GB</div><ul><li>延遲低</li><li>AI、生圖、大型模擬更有利</li><li>48GB 足夠多工</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-gpu"/></svg><div class="ttl">顯示卡</div><div class="model">RTX 5070 Ti Gaming OC</div><ul><li>Windforce 三風扇</li><li>CP 值很高的一級產品</li><li>與 ROG 僅差 1~3%</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-ssd"/></svg><div class="ttl">SSD</div><div class="model">TiPro9000 1TB</div><ul><li>約 14GB/s 讀取</li><li>載入大型模型更快</li><li>生圖載入 Checkpoint 快</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-cooler"/></svg><div class="ttl">散熱器</div><div class="model">ID-Cooling FX360</div><ul><li>360mm 一體式水冷</li><li>壓 7700 綽綽有餘</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-case"/></svg><div class="ttl">機殼</div><div class="model">Montech M580 PRO</div><ul><li>支援 360 水冷</li><li>支援 ATX 主機板</li></ul></div>
+      <div class="card"><svg class="ico"><use href="#part-psu"/></svg><div class="ttl">電源</div><div class="model">MSI MPG A850GS</div><ul><li>850W PCIe5</li><li>應對新世代顯卡功耗</li></ul></div>
+    </div>
+  </section>
+
+  <section id="mb">
+    <h2><span class="n">·</span>主機板：B850 三大品牌比較</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>品牌</th><th>定位</th><th>供電</th><th>特色</th><th>價格</th></tr></thead>
+      <tbody>
+        <tr><td>Gigabyte AORUS STEALTH</td><td>高階</td><td>14+2+2</td><td>5GbE、散熱最好</td><td>約 7900</td></tr>
+        <tr><td>MSI Tomahawk</td><td>中高階</td><td>14 相左右</td><td>BIOS 成熟</td><td>約 7000~8000</td></tr>
+        <tr><td>ASUS TUF B850</td><td>中階</td><td>12~14 相</td><td>耐用</td><td>約 6500~7500</td></tr>
+        <tr><td>ASUS ROG Strix</td><td>高階</td><td>16 相以上</td><td>功能最多</td><td>9000 以上</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="gpu">
+    <h2><span class="n">·</span>顯示卡：RTX 5070 Ti 品牌比較</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>品牌</th><th>等級</th><th>散熱</th><th>價格</th></tr></thead>
+      <tbody>
+        <tr><td>Gigabyte Gaming OC</td><td>中高階</td><td>Windforce 三風扇</td><td>約 36990</td></tr>
+        <tr><td>MSI Gaming Trio</td><td>中高階</td><td>Tri Frozr</td><td>約 37000~39000</td></tr>
+        <tr><td>ASUS TUF</td><td>高階</td><td>超大散熱</td><td>39000 左右</td></tr>
+        <tr><td>ASUS ROG Strix</td><td>旗艦</td><td>最佳散熱、超頻</td><td>42000 以上</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">說明</span>Gaming OC 屬 CP 值很高的一級產品，與 ROG 相比效能通常只差 1~3%，主要差異在散熱、噪音與用料。</div>
+  </section>
+
+  <section id="game">
+    <h2><span class="n">2.</span>1080P 遊戲分析</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>遊戲</th><th>目前</th><th>升級後</th><th>提升</th></tr></thead>
+      <tbody>
+        <tr><td>3A 大作 Ultra</td><td>100~140 FPS</td><td>180~260 FPS</td><td class="up">約 60~90%</td></tr>
+        <tr><td>VALORANT</td><td>350~450 FPS</td><td>500~700 FPS</td><td class="up">CPU +30% 以上</td></tr>
+        <tr><td>Cities Skylines II</td><td>CPU 限制明顯</td><td>約 +25~45%</td><td class="up">大型城市改善最多</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">1080P 下</span>多數 3A 開始偏 CPU 瓶頸，Ryzen 7700 足以發揮 5070Ti 大部分性能；若追求極高 FPS，可再升級 9800X3D 等 X3D 平台。</div>
+  </section>
+
+  <section id="ai">
+    <h2><span class="n">3.</span>AI 生圖</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>模型</th><th>目前</th><th>升級</th></tr></thead>
+      <tbody>
+        <tr><td>Z Image Turbo</td><td>2 s/it</td><td>約 1~1.2 s/it</td></tr>
+        <tr><td>Illustrious XL</td><td>2 it/s</td><td>3.5~4.2 it/s</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">理論</span>GPU 算力約提升 80~100%；CPU 提升可降低資料前處理等待時間，多工時更明顯。</div>
+  </section>
+
+  <section id="models">
+    <h2><span class="n">4.</span>16GB VRAM 可使用模型</h2>
+    <div class="tags">
+      <span class="tag">FLUX Dev</span><span class="tag">FLUX Schnell</span><span class="tag">SDXL</span>
+      <span class="tag">Illustrious XL</span><span class="tag">Pony XL</span><span class="tag">Juggernaut XL</span>
+      <span class="tag">Wan Video（部分）</span><span class="tag">Qwen 7B FP4</span><span class="tag">Gemma 3 12B 量化</span>
+      <span class="tag">Mistral Small 量化</span>
+    </div>
+    <div class="note"><span class="k">優勢</span>比 8GB VRAM 能使用更多 ControlNet、LoRA 與高解析工作流程。</div>
+  </section>
+
+  <section id="lora">
+    <h2><span class="n">5.</span>AI Toolkit 訓練 LoRA</h2>
+    <p class="lead">可以。16GB VRAM 下均可訓練：</p>
+    <ul class="clean">
+      <li><b>SDXL LoRA</b></li>
+      <li><b>Pony XL LoRA</b></li>
+      <li><b>Illustrious XL LoRA</b></li>
+      <li><b>FLUX LoRA</b>（降低 batch 及解析度）</li>
+    </ul>
+    <div class="note"><span class="k">注意</span>FLUX 速度仍會比 24GB 顯卡慢，但可順利訓練。</div>
+  </section>
+
+  <section id="multi">
+    <h2><span class="n">6.</span>多工能力</h2>
+    <p class="lead">你平常會同時開：ComfyUI、三個以上機器人、瀏覽器、Discord 與其他背景程式。</p>
+    <div class="note"><span class="k">結論</span>48GB RAM + 8 核 16 緒能大幅降低背景程式互相搶資源的情況，體驗會比目前平台流暢許多。</div>
+  </section>
+
+  <section id="sum">
+    <h2><span class="n">★</span>總結</h2>
+    <p class="lead">整體屬於跨世代升級。</p>
+    <ul class="clean">
+      <li>遊戲：約 <b>60~90%</b> GPU 提升</li>
+      <li>CPU 多工：約 <b>40~70%</b></li>
+      <li>AI 生圖：約 <b>80~100%</b></li>
+      <li>可用模型增加非常多</li>
+      <li>可以開始使用 AI Toolkit 訓練 LoRA</li>
+      <li>未來 AM5 平台仍有升級空間</li>
+    </ul>
+  </section>
+
+  <footer>
+    ChatGPT（簡潔清爽版）· 三 AI 報告比較專案 · 產品示意圖為向量繪製，可替換為真實照片<br>
+    生成於 2026-06-15 · 數據為估算，實際以評測為準
+  </footer>
+</div>
+</body>
+</html>
