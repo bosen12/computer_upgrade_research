@@ -101,7 +101,7 @@
   <nav class="toc">
     <a href="#looks">外觀亮點</a><a href="#parts">零件分析</a><a href="#mb">主機板</a><a href="#gpu">顯示卡</a>
     <a href="#game">遊戲</a><a href="#ai">AI 生圖</a><a href="#models">可用模型</a>
-    <a href="#lora">LoRA 訓練</a><a href="#multi">多工</a><a href="#sum">總結</a>
+    <a href="#lora">LoRA 訓練</a><a href="#media">影音 AI</a><a href="#multi">多工</a><a href="#sum">總結</a>
   </nav>
 
   <section id="looks">
@@ -202,6 +202,19 @@
       <li><b>FLUX LoRA</b>（降低 batch 及解析度）</li>
     </ul>
     <div class="note"><span class="k">注意</span>FLUX 速度仍會比 24GB 顯卡慢，但可順利訓練。</div>
+  </section>
+
+  <section id="media">
+    <h2><span class="n">·</span>延伸：AI 影音（去馬賽克 / 補幀）</h2>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>工作流</th><th>VRAM</th><th>5070 Ti 16GB</th></tr></thead>
+      <tbody>
+        <tr><td>LADA 去馬賽克</td><td>1080p ~4–8GB</td><td>流暢，可吃 4K，較 4060 Ti 約快 1.5–2×</td></tr>
+        <tr><td>SVFI · RIFE 補幀</td><td>1080p ~2–4GB</td><td>24→60/120fps 近即時</td></tr>
+        <tr><td>SVFI · GMFSS 補幀</td><td>1080p ~6–10GB</td><td>16GB 不再 OOM，動畫畫質最佳</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">重點</span>逐幀影音 AI 很吃顯存，16GB 讓 GMFSS / 4K 不爆顯存；去馬賽克工具請僅用於合法、個人用途之內容。</div>
   </section>
 
   <section id="multi">

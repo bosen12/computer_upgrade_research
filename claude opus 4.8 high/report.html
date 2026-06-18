@@ -125,7 +125,7 @@
   <nav class="toc">
     <a href="#spec">規格對比</a><a href="#looks">外觀亮點</a><a href="#parts">零件用料</a><a href="#mb">主機板梯隊</a>
     <a href="#gpu">顯卡梯隊</a><a href="#game">遊戲效能</a><a href="#ai">AI 生圖</a>
-    <a href="#models">可用模型</a><a href="#multi">多工</a><a href="#verdict">總結評分</a>
+    <a href="#models">可用模型</a><a href="#media">影音 AI</a><a href="#multi">多工</a><a href="#verdict">總結評分</a>
   </nav>
 
   <!-- 規格 -->
@@ -278,6 +278,22 @@
       </tbody>
     </table></div>
     <div class="note good"><span class="k">LoRA 訓練</span><div>16GB 完全可用 AI-Toolkit 訓練 SDXL / Illustrious / <b>FLUX.1 LoRA</b>（8-bit Adam + FP8 基礎模型）。SDXL LoRA 約 0.6–1.0 s/step，可用 batch 2–4 加速收斂。FLUX.2 較緊繃需開 gradient checkpointing。這是 8GB 完全做不到的分水嶺。</div></div>
+  </section>
+
+  <!-- 影音 AI -->
+  <section id="media">
+    <h2><span class="n">▶</span>延伸 · AI 影音工作流（LADA 去馬賽克 / SVFI 補幀）</h2>
+    <p class="lead">除了生圖，這張 16GB 卡跑 GPU 影音 AI 同樣吃得開。以下評估 LADA（馬賽克偵測還原）與 SVFI（影格內插補幀）在新平台的可行性與速度。</p>
+    <div class="scroll"><table class="tbl">
+      <thead><tr><th>工作流</th><th>模型 / 原理</th><th>VRAM 需求</th><th>5070 Ti 16GB 表現</th></tr></thead>
+      <tbody>
+        <tr><td><b>LADA 去馬賽克</b></td><td>偵測 + 深度還原（VSR / GAN）</td><td>1080p 約 4–8GB</td><td>流暢；可吃 4K 來源或較大 batch，偵測+還原不爆顯存。較 4060 Ti 約快 <span class="up">1.5–2×</span></td></tr>
+        <tr><td><b>SVFI · RIFE</b></td><td>輕量光流內插</td><td>1080p 約 2–4GB</td><td>1080p 近即時，4K 也可；24→60 / 120fps 輕鬆，幾乎零等待</td></tr>
+        <tr><td><b>SVFI · GMFSS</b></td><td>高畫質內插（動畫最佳）</td><td>1080p 約 6–10GB</td><td>16GB 不再 OOM；輸出速度個位數~十幾 fps，較 4060 Ti 約快 <span class="up">1.7–2×</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><span class="k">為何 16GB 是關鍵</span><div>這兩類工具都是<b>逐幀處理</b>：GMFSS、4K 解析或「偵測+還原」雙模型同時上場時，很容易吃滿 8GB 而被迫降模型或切片。16GB GDDR7 + 第 5 代 Tensor Core 讓你能在 1080p 直接開高畫質模型、甚至處理 4K，速度與穩定度都跨一階。</div></div>
+    <div class="note warn"><span class="k">⚠ 使用提醒</span><div>LADA 等去馬賽克工具請僅用於你<b>擁有或合法授權、且為個人用途</b>的內容；切勿用於非法、未經當事人同意或任何未成年相關素材。</div></div>
   </section>
 
   <!-- 多工 -->
