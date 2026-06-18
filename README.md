@@ -9,6 +9,10 @@
 ![GPU](https://img.shields.io/badge/GPU-RTX_5070_Ti_16G-76B900?style=flat-square&logo=nvidia&logoColor=white)
 ![Price](https://img.shields.io/badge/NT$-83,458-blue?style=flat-square)
 
+### 🌐 [▶ 打開互動式網頁 `index.html`](index.html)
+
+Apple 風格單頁體驗：滾動淡入動畫、舊→新拖曳對比滑桿、可放大的燈箱圖庫、數字動態計數、品牌切換頁籤。
+
 </div>
 
 ---

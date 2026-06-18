@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC 升級 · 跨世代的躍升</title>
+<style>
+  :root{
+    --ink:#1d1d1f; --ink2:#6e6e73; --line:#d2d2d7; --blue:#0071e3; --bluehover:#0077ed;
+    --bg:#fff; --bg2:#fafafa; --bg3:#f5f5f7; --black:#000;
+    --maxw:1000px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","PingFang TC","Microsoft JhengHei",sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:var(--blue);text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:100;height:48px;display:flex;align-items:center;
+    background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(0,0,0,.08);transition:background .3s,color .3s,border-color .3s}
+  nav.dark{background:rgba(22,22,23,.72);border-bottom-color:rgba(255,255,255,.1)}
+  nav .wrap{display:flex;align-items:center;gap:6px;width:100%;max-width:1024px}
+  nav .brand{font-weight:600;font-size:15px;margin-right:auto;letter-spacing:-.01em}
+  nav a.lnk{color:var(--ink2);font-size:12.5px;padding:6px 10px;border-radius:8px;transition:color .2s,background .2s}
+  nav.dark .brand{color:#f5f5f7} nav.dark a.lnk{color:#d2d2d7}
+  nav a.lnk:hover{color:var(--ink)} nav.dark a.lnk:hover{color:#fff}
+  @media(max-width:720px){nav a.lnk{display:none}}
+
+  /* generic section */
+  section{padding:110px 0;text-align:center;overflow:hidden}
+  .eyebrow{font-size:21px;font-weight:600;color:var(--blue);margin-bottom:8px}
+  h1,h2,h3{letter-spacing:-.02em;line-height:1.05;font-weight:600}
+  h1{font-size:clamp(40px,7vw,80px)}
+  h2{font-size:clamp(34px,5.4vw,56px)}
+  .tag{font-size:clamp(19px,2.4vw,26px);color:var(--ink2);font-weight:500;margin-top:14px;max-width:640px;margin-left:auto;margin-right:auto}
+  .lede{font-size:clamp(20px,2.6vw,30px);font-weight:500;line-height:1.3;max-width:780px;margin:0 auto;letter-spacing:-.01em}
+  .ctas{margin-top:26px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+  .btn{background:var(--blue);color:#fff;padding:9px 20px;border-radius:980px;font-size:16px;transition:background .2s}
+  .btn:hover{background:var(--bluehover)}
+  .link{color:var(--blue);font-size:16px} .link:hover{text-decoration:underline}
+  .link::after{content:" ›"}
+  section.dark{background:var(--black);color:#f5f5f7}
+  section.dark h2{color:#f5f5f7} section.dark .tag{color:#a1a1a6}
+  section.gray{background:var(--bg3)}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+  /* hero */
+  .hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    background:radial-gradient(120% 80% at 50% 0%,#1b1b1d 0%,#000 60%);color:#f5f5f7;padding:80px 22px 40px}
+  .hero h1{background:linear-gradient(180deg,#fff,#b9b9bd);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .tag{color:#a1a1a6}
+  .hero-img{width:min(1100px,96vw);margin:36px auto 0;border-radius:22px;overflow:hidden;
+    box-shadow:0 40px 120px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08)}
+  .scrolldot{margin-top:30px;width:26px;height:42px;border:2px solid #6e6e73;border-radius:14px;position:relative}
+  .scrolldot::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;background:#a1a1a6;border-radius:2px;
+    transform:translateX(-50%);animation:sd 1.6s infinite}
+  @keyframes sd{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,12px)}}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:920px;margin:0 auto}
+  .stat .num{font-size:clamp(40px,6vw,68px);font-weight:600;letter-spacing:-.03em;
+    background:linear-gradient(120deg,#0071e3,#42a5f5,#9c4dff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .cap{color:var(--ink2);font-size:16px;margin-top:4px;font-weight:500}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr);gap:32px 16px}}
+
+  /* product stage */
+  .stage-img{width:min(720px,92vw);margin:30px auto 0}
+  .stage-img.lift{filter:drop-shadow(0 30px 60px rgba(0,0,0,.28))}
+  .spec-inline{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .spec-inline .k{font-size:clamp(26px,3.4vw,40px);font-weight:600;letter-spacing:-.02em}
+  .spec-inline .v{color:var(--ink2);font-size:15px;margin-top:2px}
+  section.dark .spec-inline .v{color:#a1a1a6}
+
+  /* gallery + lightbox */
+  .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:920px;margin:40px auto 0}
+  .gcard{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;cursor:zoom-in;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+  .gcard:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.14)}
+  .gcard .ph{height:230px;display:flex;align-items:center;justify-content:center;background:#fff;padding:22px}
+  .gcard .ph img{max-height:100%;width:auto;object-fit:contain}
+  .gcard .cap{padding:14px 18px;text-align:left;border-top:1px solid var(--line)}
+  .gcard .cap b{font-size:15px} .gcard .cap span{display:block;color:var(--ink2);font-size:13px;margin-top:2px}
+  @media(max-width:680px){.grid4{grid-template-columns:1fr}}
+  .lightbox{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.86);backdrop-filter:blur(8px);
+    display:flex;align-items:center;justify-content:center;padding:30px;opacity:0;pointer-events:none;transition:opacity .3s}
+  .lightbox.show{opacity:1;pointer-events:auto}
+  .lightbox figure{max-width:900px;text-align:center}
+  .lightbox .box{background:#fff;border-radius:20px;padding:30px;max-height:78vh;display:flex;align-items:center;justify-content:center}
+  .lightbox img{max-height:62vh;width:auto}
+  .lightbox figcaption{color:#f5f5f7;margin-top:18px;font-size:17px}
+  .lightbox .close{position:absolute;top:24px;right:28px;width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,.14);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+  /* compare slider */
+  .cmp{position:relative;max-width:920px;margin:44px auto 0;height:340px;border-radius:24px;overflow:hidden;
+    border:1px solid var(--line);user-select:none;background:#000}
+  .cmp .panel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:30px}
+  .cmp .new{background:radial-gradient(120% 120% at 50% 0%,#0a2540,#000)}
+  .cmp .old{background:#3a3a3c;clip-path:inset(0 50% 0 0)}
+  .cmp .panel .label{position:absolute;top:18px;font-size:13px;letter-spacing:.12em;color:#fff;opacity:.7}
+  .cmp .new .label{right:22px} .cmp .old .label{left:22px}
+  .cmp .big{font-size:clamp(26px,4vw,42px);font-weight:600;color:#fff;letter-spacing:-.02em}
+  .cmp .sub{color:#d2d2d7;font-size:15px}
+  .cmp .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+  .cmp .chips span{font-size:12.5px;color:#fff;background:rgba(255,255,255,.14);border-radius:980px;padding:5px 11px}
+  .cmp .new .big{background:linear-gradient(120deg,#42a5f5,#9c4dff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cmp-range{position:absolute;inset:0;width:100%;margin:0;opacity:0;cursor:ew-resize;z-index:5}
+  .cmp-handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);pointer-events:none;box-shadow:0 0 14px rgba(0,0,0,.5)}
+  .cmp-handle::after{content:"⇄";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:42px;height:42px;border-radius:50%;background:#fff;color:#1d1d1f;display:flex;align-items:center;justify-content:center;font-size:17px}
+
+  /* perf bars */
+  .bars{max-width:760px;margin:40px auto 0;text-align:left}
+  .bar{margin:18px 0}
+  .bar .row{display:flex;justify-content:space-between;font-size:16px;margin-bottom:8px;font-weight:500}
+  .bar .row .p{color:var(--blue);font-weight:600}
+  .bar .track{height:12px;background:var(--bg3);border-radius:980px;overflow:hidden}
+  section.dark .bar .track{background:#2a2a2c}
+  .bar .fill{height:100%;width:0;border-radius:980px;background:linear-gradient(90deg,#0071e3,#9c4dff);transition:width 1.3s cubic-bezier(.2,.7,.2,1)}
+
+  /* tabs */
+  .tabs{display:inline-flex;gap:4px;background:var(--bg3);padding:4px;border-radius:980px;margin:30px auto 0}
+  .tabs button{border:none;background:none;font:inherit;font-size:15px;font-weight:500;color:var(--ink2);
+    padding:8px 20px;border-radius:980px;cursor:pointer;transition:.2s}
+  .tabs button.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .tpanel{display:none;max-width:880px;margin:26px auto 0}
+  .tpanel.active{display:block;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+  table{width:100%;border-collapse:collapse;font-size:15px;text-align:left;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+  th,td{padding:13px 16px;border-bottom:1px solid var(--line)}
+  thead th{background:var(--bg3);font-weight:600}
+  tbody tr:last-child td{border-bottom:none}
+  tr.hi td{background:rgba(0,113,227,.06)} tr.hi td:first-child{font-weight:600;color:var(--blue)}
+
+  /* report cards */
+  .reps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:940px;margin:44px auto 0}
+  .rep{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 24px;text-align:left;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s;display:flex;flex-direction:column;gap:8px}
+  .rep:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.12)}
+  .rep .badge{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--blue)}
+  .rep h3{font-size:21px} .rep p{color:var(--ink2);font-size:14.5px;flex:1}
+  .rep .go{font-size:15px;color:var(--blue);font-weight:500;margin-top:6px}
+  @media(max-width:720px){.reps{grid-template-columns:1fr}}
+
+  footer{padding:40px 22px 56px;text-align:center;color:var(--ink2);font-size:12px;background:var(--bg3);line-height:1.6}
+  footer .sm{font-size:11px;color:#86868b;max-width:760px;margin:10px auto 0}
+</style>
+</head>
+<body>
+
+<nav id="nav"><div class="wrap">
+  <span class="brand">PC Upgrade</span>
+  <a class="lnk" href="#stats">總覽</a>
+  <a class="lnk" href="#looks">外觀</a>
+  <a class="lnk" href="#compare">新舊對比</a>
+  <a class="lnk" href="#perf">效能</a>
+  <a class="lnk" href="#brands">品牌</a>
+  <a class="lnk" href="#reports">報告</a>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <p class="eyebrow reveal">2026 旗艦升級</p>
+  <h1 class="reveal d1">跨世代的躍升。</h1>
+  <p class="tag reveal d2">i5-12400 + RTX 4060 Ti　→　Ryzen 7 7700 + RTX 5070 Ti。<br>為遊戲、AI 生圖與重度多工而生。</p>
+  <div class="ctas reveal d3">
+    <a class="btn" href="#looks">看外觀</a>
+    <a class="link" href="#reports" style="color:#2997ff">閱讀完整分析</a>
+  </div>
+  <div class="hero-img reveal d3"><img src="assets/images/build-render-rgb.jpg" alt="整機組裝示意"></div>
+  <div class="scrolldot reveal d4"></div>
+</header>
+
+<!-- STATS -->
+<section id="stats">
+  <h2 class="reveal">數字會說話。</h2>
+  <p class="tag reveal d1">一次到位的全平台改變。</p>
+  <div class="stats" style="margin-top:50px">
+    <div class="stat reveal d1"><div class="num" data-to="16" data-suffix="GB">0</div><div class="cap">顯示記憶體 · 翻倍</div></div>
+    <div class="stat reveal d2"><div class="num" data-to="150" data-prefix="+" data-suffix="%">0</div><div class="cap">3A 遊戲效能</div></div>
+    <div class="stat reveal d3"><div class="num" data-to="48" data-suffix="GB">0</div><div class="cap">DDR5-6000 記憶體</div></div>
+    <div class="stat reveal d4"><div class="num" data-to="14000" data-suffix="" data-comma="1">0</div><div class="cap">SSD MB/s · Gen5</div></div>
+  </div>
+</section>
+
+<!-- GPU stage (black) -->
+<section class="dark" id="looks">
+  <p class="eyebrow reveal" style="color:#2997ff">顯示卡</p>
+  <h2 class="reveal d1">RTX 5070 Ti。<br>16GB 的怪獸。</h2>
+  <p class="tag reveal d2">Blackwell 架構、8960 CUDA、GDDR7。徹底告別 8GB 的 VRAM 焦慮。</p>
+  <div class="stage-img reveal d2"><img src="assets/images/5070ti.png" alt="技嘉 RTX 5070 Ti GAMING OC"></div>
+  <div class="spec-inline reveal d3">
+    <div><div class="k">16GB</div><div class="v">GDDR7 · 896 GB/s</div></div>
+    <div><div class="k">2588<span style="font-size:.5em">MHz</span></div><div class="v">GAMING OC 超頻</div></div>
+    <div><div class="k">3 風扇</div><div class="v">風之力 · RGB</div></div>
+  </div>
+</section>
+
+<!-- Motherboard (white) -->
+<section>
+  <p class="eyebrow reveal">主機板</p>
+  <h2 class="reveal d1">B850 AORUS STEALTH。<br>正面，零雜亂。</h2>
+  <p class="tag reveal d2">背插式設計，所有接線藏到背面。14+2+2 相供電，5GbE + Wi-Fi 7。</p>
+  <div class="stage-img lift reveal d2"><img src="assets/images/b850.png" alt="技嘉 B850 AORUS STEALTH"></div>
+  <div class="spec-inline reveal d3">
+    <div><div class="k">背插式</div><div class="v">走線藏背面</div></div>
+    <div><div class="k">14+2+2</div><div class="v">相數位供電</div></div>
+    <div><div class="k">雙 Gen5</div><div class="v">M.2 插槽</div></div>
+  </div>
+</section>
+
+<!-- RAM (gray) -->
+<section class="gray">
+  <p class="eyebrow reveal">記憶體</p>
+  <h2 class="reveal d1">48GB DDR5-6000。<br>CL28 低延遲。</h2>
+  <p class="tag reveal d2">Biwin Black Opal DW100。容量、頻寬與時序的完美平衡，AI 與多工不再吃緊。</p>
+  <div class="stage-img reveal d2"><img src="assets/images/1-biwin-dw100-memory-black-1.webp" alt="Biwin Black Opal DW100 DDR5"></div>
+  <div class="spec-inline reveal d3">
+    <div><div class="k">48GB</div><div class="v">24GB × 2</div></div>
+    <div><div class="k">CL28</div><div class="v">真實延遲 ~9.3ns</div></div>
+    <div><div class="k">RGB</div><div class="v">頂部燈條</div></div>
+  </div>
+</section>
+
+<!-- Case (white) -->
+<section>
+  <p class="eyebrow reveal">機殼</p>
+  <h2 class="reveal d1">全景玻璃。<br>一覽無遺。</h2>
+  <p class="tag reveal d2">全漢 M580 PRO-BA。曲面無柱玻璃、背插分艙，把這套漂亮的零件完整展示出來。</p>
+  <div class="stage-img lift reveal d2" style="width:min(460px,80vw)"><img src="assets/images/m580pro.jpg" alt="全漢 M580 PRO-BA" style="border-radius:18px"></div>
+</section>
+
+<!-- Gallery -->
+<section class="gray" id="gallery">
+  <h2 class="reveal">外觀亮點。</h2>
+  <p class="tag reveal d1">點一下放大細看。這四個是裝機後最搶眼的零件。</p>
+  <div class="grid4">
+    <figure class="gcard reveal d1" data-cap="技嘉 RTX 5070 Ti GAMING OC · 三風扇 RGB"><div class="ph"><img src="assets/images/5070ti.png" alt="GPU"></div><div class="cap"><b>技嘉 RTX 5070 Ti GAMING OC</b><span>三風扇風之力散熱 · RGB</span></div></figure>
+    <figure class="gcard reveal d2" data-cap="技嘉 B850 AORUS STEALTH · 背插式主機板"><div class="ph"><img src="assets/images/b850.png" alt="Motherboard"></div><div class="cap"><b>技嘉 B850 AORUS STEALTH</b><span>背插式 · 正面走線極簡</span></div></figure>
+    <figure class="gcard reveal d1" data-cap="Biwin Black Opal DW100 · DDR5-6000 CL28"><div class="ph"><img src="assets/images/1-biwin-dw100-memory-black-1.webp" alt="RAM"></div><div class="cap"><b>Biwin Black Opal DW100</b><span>DDR5-6000 CL28 · RGB</span></div></figure>
+    <figure class="gcard reveal d2" data-cap="全漢 M580 PRO-BA · 全景玻璃機殼"><div class="ph"><img src="assets/images/m580pro.jpg" alt="Case"></div><div class="cap"><b>全漢 M580 PRO-BA</b><span>全景曲面玻璃 · 背插分艙</span></div></figure>
+  </div>
+</section>
+
+<!-- Compare slider -->
+<section id="compare">
+  <h2 class="reveal">舊 → 新，拖一下看差距。</h2>
+  <p class="tag reveal d1">把滑桿往左拉看舊配置，往右拉看升級後。</p>
+  <div class="cmp reveal d1" id="cmp">
+    <div class="panel new">
+      <span class="label">新 · 升級後</span>
+      <div class="big">Ryzen 7 7700 + RTX 5070 Ti</div>
+      <div class="sub">8C/16T · Blackwell 16GB · DDR5 · Gen5</div>
+      <div class="chips"><span>8 核 16 緒</span><span>16GB VRAM</span><span>48GB DDR5</span><span>Gen5 14GB/s</span></div>
+    </div>
+    <div class="panel old" id="cmpOld">
+      <span class="label">舊 · 現役</span>
+      <div class="big" style="color:#e8e8ed">i5-12400 + RTX 4060 Ti</div>
+      <div class="sub">6C/12T · 8GB VRAM · DDR4 · Gen4</div>
+      <div class="chips"><span>6 核 12 緒</span><span>8GB VRAM</span><span>32GB DDR4</span><span>Gen4 6.6GB/s</span></div>
+    </div>
+    <input type="range" class="cmp-range" id="cmpRange" min="0" max="100" value="50" aria-label="新舊對比滑桿">
+    <div class="cmp-handle" id="cmpHandle"></div>
+  </div>
+</section>
+
+<!-- Performance -->
+<section class="dark" id="perf">
+  <h2 class="reveal">脫胎換骨的體驗。</h2>
+  <p class="tag reveal d1">同樣的工作，更快、更穩、更安靜。</p>
+  <div class="bars reveal d1">
+    <div class="bar"><div class="row"><span>1080p 3A 遊戲</span><span class="p">+150%</span></div><div class="track"><div class="fill" data-w="95"></div></div></div>
+    <div class="bar"><div class="row"><span>AI 生圖（ComfyUI）</span><span class="p">2.5×</span></div><div class="track"><div class="fill" data-w="88"></div></div></div>
+    <div class="bar"><div class="row"><span>LoRA 訓練可行性</span><span class="p">質變</span></div><div class="track"><div class="fill" data-w="100"></div></div></div>
+    <div class="bar"><div class="row"><span>多工掛機穩定度</span><span class="p">+50%</span></div><div class="track"><div class="fill" data-w="80"></div></div></div>
+    <div class="bar"><div class="row"><span>記憶體頻寬</span><span class="p">+88%</span></div><div class="track"><div class="fill" data-w="78"></div></div></div>
+  </div>
+</section>
+
+<!-- Brand tabs -->
+<section id="brands">
+  <h2 class="reveal">同型號，不同等級。</h2>
+  <p class="tag reveal d1">三大品牌梯隊比較。切換看主機板與顯示卡。</p>
+  <div class="tabs reveal d1">
+    <button class="active" data-tab="mb">主機板 B850</button>
+    <button data-tab="gpu">顯示卡 5070 Ti</button>
+  </div>
+  <div class="tpanel active" id="tab-mb">
+    <table>
+      <thead><tr><th>等級</th><th>技嘉</th><th>微星</th><th>華碩</th></tr></thead>
+      <tbody>
+        <tr><td>入門</td><td>B850M DS3H</td><td>PRO B850M-A</td><td>PRIME B850M-A</td></tr>
+        <tr class="hi"><td>中高階 ★本單</td><td>B850 AORUS STEALTH</td><td>MAG TOMAHAWK</td><td>TUF B850-PLUS</td></tr>
+        <tr><td>旗艦</td><td>X870E AORUS MASTER</td><td>MEG X870E ACE</td><td>ROG STRIX X870E-E</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tpanel" id="tab-gpu">
+    <table>
+      <thead><tr><th>梯隊</th><th>技嘉</th><th>微星</th><th>華碩</th></tr></thead>
+      <tbody>
+        <tr><td>入門</td><td>Eagle / Windforce</td><td>Ventus 3X</td><td>Dual / Prime</td></tr>
+        <tr class="hi"><td>主力 ★本單</td><td>GAMING OC（魔鷹）</td><td>GAMING TRIO（魔龍）</td><td>TUF Gaming</td></tr>
+        <tr><td>旗艦</td><td>AORUS Master（超級雕）</td><td>SUPRIM X（超龍）</td><td>ROG Strix</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Reports -->
+<section class="gray" id="reports">
+  <h2 class="reveal">三份 AI 深度分析。</h2>
+  <p class="tag reveal d1">同一份升級，三個 AI 各寫一份。點進看完整報告。</p>
+  <div class="reps">
+    <a class="rep reveal d1" href="claude%20opus%204.8%20high/report.html">
+      <span class="badge">◆ Claude Opus 4.8</span><h3>深度技術版</h3>
+      <p>最完整準確：規格/價格表、模型清單、誠實點出 CPU 瓶頸與保固陷阱、省錢建議與評分。</p>
+      <span class="go">閱讀報告 ›</span>
+    </a>
+    <a class="rep reveal d2" href="gemini%20pro/report.html">
+      <span class="badge" style="color:#9c4dff">✦ Gemini Pro</span><h3>視覺豐富版</h3>
+      <p>可讀性最強、分段生動、品牌梯隊講解清楚。數字偏樂觀，當作熱血導覽剛剛好。</p>
+      <span class="go">閱讀報告 ›</span>
+    </a>
+    <a class="rep reveal d3" href="chatgpt/report.html">
+      <span class="badge" style="color:#10a37f">◇ ChatGPT</span><h3>簡潔清爽版</h3>
+      <p>最精簡好瀏覽，重點一目了然。適合先快速掌握全貌，再深入其他兩版。</p>
+      <span class="go">閱讀報告 ›</span>
+    </a>
+  </div>
+  <div class="ctas reveal d2" style="margin-top:40px"><a class="link" href="README.md">看專案說明與品質評比</a></div>
+</section>
+
+<footer>
+  PC 升級分析 · 三 AI 報告比較專案　|　原價屋估價單 NT$ 83,458<br>
+  <span class="sm">產品照片為真實零件實拍（顯卡 / 主機板 / 記憶體 / 機殼）；整機封面為 AI 生成示意圖；CPU / SSD / 水冷 / 電源於各報告中以示意圖呈現。數據為估算，實際以評測為準。</span>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="close" id="lbClose">✕</div>
+  <figure><div class="box"><img id="lbImg" src="" alt=""></div><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+<script>
+(function(){
+  // Scroll reveal
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);
+      if(e.target.classList.contains('stat')) countUp(e.target.querySelector('.num'));
+      if(e.target.classList.contains('bars')) e.target.querySelectorAll('.fill').forEach(function(f){f.style.width=f.dataset.w+'%';});
+    }});
+  },{threshold:.18});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+  // Count up
+  function countUp(el){
+    if(!el||el.dataset.done) return; el.dataset.done=1;
+    var to=+el.dataset.to, pre=el.dataset.prefix||'', suf=el.dataset.suffix||'', comma=el.dataset.comma;
+    var t0=null, dur=1400;
+    function fmt(n){ n=Math.round(n); var s=comma?n.toLocaleString('en-US'):(''+n); return pre+s+suf; }
+    function step(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1); var e=1-Math.pow(1-p,3);
+      el.textContent=fmt(to*e); if(p<1)requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+
+  // Nav dark when over dark sections
+  var nav=document.getElementById('nav');
+  var darks=Array.prototype.slice.call(document.querySelectorAll('section.dark, .hero'));
+  function onScroll(){
+    var y=nav.offsetHeight+1, over=false;
+    darks.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<=y && r.bottom>=y) over=true; });
+    nav.classList.toggle('dark',over);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // Compare slider
+  var range=document.getElementById('cmpRange'), oldP=document.getElementById('cmpOld'), handle=document.getElementById('cmpHandle');
+  function setCmp(v){ oldP.style.clipPath='inset(0 '+(100-v)+'% 0 0)'; handle.style.left=v+'%'; }
+  range.addEventListener('input',function(){setCmp(+range.value);}); setCmp(50);
+
+  // Tabs
+  document.querySelectorAll('.tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('active');});
+      document.querySelectorAll('.tpanel').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active'); document.getElementById('tab-'+b.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Lightbox
+  var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'), lbCap=document.getElementById('lbCap');
+  document.querySelectorAll('.gcard').forEach(function(c){
+    c.addEventListener('click',function(){
+      var img=c.querySelector('img'); lbImg.src=img.src; lbImg.alt=img.alt; lbCap.textContent=c.dataset.cap||'';
+      lb.classList.add('show');
+    });
+  });
+  function closeLb(){ lb.classList.remove('show'); }
+  document.getElementById('lbClose').addEventListener('click',closeLb);
+  lb.addEventListener('click',function(e){ if(e.target===lb||e.target.tagName==='FIGURE') closeLb(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLb(); });
+})();
+</script>
+</body>
+</html>
