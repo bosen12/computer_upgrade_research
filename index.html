@@ -219,6 +219,26 @@
   .cfg-perf .saved{color:#15a66b;font-weight:600}
   .cfgchip{display:inline-block;background:#fde6ea;color:#e0445e;border-radius:980px;padding:3px 11px;font-size:12.5px;margin:3px 5px 3px 0}
 
+  /* cpu compare */
+  .cpu{max-width:760px;margin:40px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 28px;text-align:left}
+  .cpu-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .cpu-chip{border:1px solid var(--line);background:#fff;border-radius:980px;padding:9px 16px;font-size:14px;cursor:pointer;transition:.2s;font-weight:600}
+  .cpu-chip:hover{border-color:#b0b0b6}
+  .cpu-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .cpu-chip .def{font-size:11px;opacity:.7;margin-left:5px;font-weight:500}
+  .cpu-metric{margin-top:20px}
+  .cpu-metric h5{font-size:13px;color:var(--ink2);font-weight:600;margin-bottom:10px}
+  .cpu-bar{display:flex;align-items:center;gap:12px;margin:9px 0}
+  .cpu-bar .lbl{width:84px;font-size:13px;font-weight:500;color:var(--ink2)}
+  .cpu-bar .track{flex:1;height:14px;background:var(--bg3);border-radius:980px;overflow:hidden}
+  .cpu-bar .fill{height:100%;width:0;border-radius:980px;background:#c7c7cc;transition:width .8s cubic-bezier(.2,.7,.2,1)}
+  .cpu-bar.sel .fill{background:linear-gradient(90deg,#0071e3,#9c4dff)}
+  .cpu-bar.sel .lbl{font-weight:700;color:var(--ink)}
+  .cpu-bar .val{width:50px;text-align:right;font-size:13px;font-weight:600}
+  .cpu-detail{margin-top:22px;background:var(--bg3);border-radius:14px;padding:14px 16px;font-size:14.5px;color:var(--ink)}
+  .cpu-detail .specs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .cpu-detail .specs span{background:#fff;border:1px solid var(--line);border-radius:980px;padding:4px 11px;font-size:12.5px;color:var(--ink2)}
+
   footer{padding:40px 22px 56px;text-align:center;color:var(--ink2);font-size:12px;background:var(--bg3);line-height:1.6}
   footer .sm{font-size:11px;color:#86868b;max-width:760px;margin:10px auto 0}
 </style>
@@ -237,6 +257,7 @@
   <a class="lnk" href="#power">耗電</a>
   <a class="lnk" href="#sim">模擬</a>
   <a class="lnk" href="#brands">品牌</a>
+  <a class="lnk" href="#cpu">CPU</a>
   <a class="lnk" href="#config">配置</a>
   <a class="lnk" href="#reports">報告</a>
 </div></nav>
@@ -486,6 +507,20 @@
       </tbody>
     </table>
   </div>
+</section>
+
+<!-- CPU upgrade path -->
+<section class="gray" id="cpu">
+  <p class="eyebrow reveal">處理器升級路徑</p>
+  <h2 class="reveal d1">想再往上，還有空間。</h2>
+  <p class="tag reveal d1">AM5 沿用同一張 B850 主機板就能直上 X3D / Zen5。點選比較——預設為本單的 7700。</p>
+  <div class="cpu reveal d1" id="cpu1">
+    <div class="cpu-chips" id="cpuChips"></div>
+    <div class="cpu-metric"><h5>🎮 1080p 遊戲效能（相對 7700）</h5><div id="cpuGame"></div></div>
+    <div class="cpu-metric"><h5>🧮 多核效能（相對 7700）</h5><div id="cpuMulti"></div></div>
+    <div class="cpu-detail"><span id="cpuNote"></span><div class="specs" id="cpuSpecs"></div></div>
+  </div>
+  <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">效能為相對估算：3D V-Cache（X3D）對遊戲幫助大、對多核較無感；Zen5（9000）多核與能效更好。價格為市場參考。升級皆免換平台。</p>
 </section>
 
 <!-- Configurator -->
@@ -761,6 +796,40 @@
     row.querySelector('input').addEventListener('change',cfgRender);
   });
   cfgRender();
+
+  // CPU upgrade-path compare (default 7700)
+  var CPUS=[
+    {id:'7700',    sn:'7700',    name:'Ryzen 7 7700',    arch:'Zen 4',               ct:'8C/16T', tdp:65,  price:6890,  game:100, multi:100, def:true, note:'本單選擇 · 65W 高能效，多工 / AI 均衡的甜蜜點。'},
+    {id:'7800x3d', sn:'7800X3D', name:'Ryzen 7 7800X3D', arch:'Zen 4 + 3D V-Cache',  ct:'8C/16T', tdp:120, price:12000, game:122, multi:98,  note:'Zen4 遊戲王者，純遊戲最划算的升級；多核與 7700 相近。'},
+    {id:'9700x',   sn:'9700X',   name:'Ryzen 7 9700X',   arch:'Zen 5',               ct:'8C/16T', tdp:65,  price:9990,  game:108, multi:115, note:'Zen5 IPC 提升，多核最強、能效佳；遊戲小贏 7700。'},
+    {id:'9800x3d', sn:'9800X3D', name:'Ryzen 7 9800X3D', arch:'Zen 5 + 3D V-Cache',  ct:'8C/16T', tdp:120, price:15500, game:130, multi:120, note:'目前最強遊戲 CPU，遊戲與多核雙強，價格也最高。'}
+  ];
+  var GMAX=135, MMAX=128, cpuSel='7700';
+  function cpuBars(target,key,max){
+    target.innerHTML='';
+    CPUS.forEach(function(c){
+      var sel=c.id===cpuSel?' sel':'', v=c[key];
+      var vt=v===100?'基準':((v>100?'+':'')+(v-100)+'%');
+      target.innerHTML+='<div class="cpu-bar'+sel+'"><span class="lbl">'+c.sn+'</span><div class="track"><div class="fill" style="width:'+(v/max*100).toFixed(1)+'%"></div></div><span class="val">'+vt+'</span></div>';
+    });
+  }
+  function cpuRender(){
+    cpuBars(document.getElementById('cpuGame'),'game',GMAX);
+    cpuBars(document.getElementById('cpuMulti'),'multi',MMAX);
+    var c=CPUS.filter(function(x){return x.id===cpuSel;})[0], base=CPUS[0], dp=c.price-base.price;
+    var pd=dp===0?'本單價格':(dp>0?'比 7700 貴 NT$ '+dp.toLocaleString():'比 7700 省 NT$ '+(-dp).toLocaleString());
+    document.getElementById('cpuNote').textContent=c.note;
+    document.getElementById('cpuSpecs').innerHTML='<span>'+c.arch+'</span><span>'+c.ct+'</span><span>'+c.tdp+'W</span><span>約 NT$ '+c.price.toLocaleString()+'</span><span>'+pd+'</span>';
+    document.querySelectorAll('#cpuChips .cpu-chip').forEach(function(b){ b.classList.toggle('on',b.dataset.id===cpuSel); });
+  }
+  var cpuChipsEl=document.getElementById('cpuChips');
+  CPUS.forEach(function(c){
+    var b=document.createElement('div'); b.className='cpu-chip'+(c.id===cpuSel?' on':''); b.dataset.id=c.id;
+    b.innerHTML=c.sn+(c.def?'<span class="def">本單</span>':'');
+    b.addEventListener('click',function(){ cpuSel=c.id; cpuRender(); });
+    cpuChipsEl.appendChild(b);
+  });
+  cpuRender();
 })();
 </script>
 </body>
