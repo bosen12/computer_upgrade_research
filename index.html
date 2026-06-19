@@ -151,6 +151,24 @@
   .rep .go{font-size:15px;color:var(--blue);font-weight:500;margin-top:6px}
   @media(max-width:720px){.reps{grid-template-columns:1fr}}
 
+  /* speed compare */
+  .spcmp{max-width:740px;margin:42px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 28px;text-align:left}
+  .spcmp-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+  .spcmp .replay{border:1px solid var(--line);background:#fff;border-radius:980px;padding:7px 16px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;transition:.2s}
+  .spcmp .replay:hover{background:var(--bg3)}
+  .sprow{margin:20px 0}
+  .sprow .nm{font-size:15px;font-weight:600;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center}
+  .sprow .nm .mult{color:var(--blue);font-weight:700;font-size:16px}
+  .sprow .pair{display:flex;flex-direction:column;gap:7px}
+  .sptrack{height:14px;background:var(--bg3);border-radius:980px;overflow:hidden}
+  .spfill{height:100%;width:0;border-radius:980px;transition:width 1s cubic-bezier(.2,.7,.2,1)}
+  .spfill.old{background:#c7c7cc}
+  .spfill.new{background:linear-gradient(90deg,#0071e3,#9c4dff)}
+  .sprow .oomtag{font-size:12.5px;color:#e0445e;font-weight:600;margin-top:7px}
+  .spcmp-legend{display:flex;gap:22px;margin-top:18px;font-size:13px;color:var(--ink2)}
+  .spcmp-legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
+  .lg.old{background:#c7c7cc}.lg.new{background:linear-gradient(90deg,#0071e3,#9c4dff)}
+
   footer{padding:40px 22px 56px;text-align:center;color:var(--ink2);font-size:12px;background:var(--bg3);line-height:1.6}
   footer .sm{font-size:11px;color:#86868b;max-width:760px;margin:10px auto 0}
 </style>
@@ -297,7 +315,18 @@
     <div class="rep reveal d2"><span class="badge" style="color:#9c4dff">SVFI · RIFE</span><h3>輕量補幀</h3><p>光流內插，1080p 約需 2–4GB。24 → 60 / 120fps 近即時，4K 補幀也跑得動。</p></div>
     <div class="rep reveal d3"><span class="badge" style="color:#0071e3">SVFI · GMFSS</span><h3>高畫質補幀</h3><p>動畫最佳，1080p 約需 6–10GB。16GB 不再 OOM，輸出速度較 4060 Ti 約快 1.7–2×。</p></div>
   </div>
-  <p class="tag reveal d2" style="font-size:14px;margin-top:26px;color:#86868b">※ LADA 等去馬賽克工具請僅用於你擁有或合法授權、且為個人用途的內容。</p>
+  <div class="spcmp reveal d1" id="spcmp">
+    <div class="spcmp-head">
+      <div class="tabs" style="margin-top:0">
+        <button class="active" data-res="hd">1080p</button>
+        <button data-res="uhd">4K</button>
+      </div>
+      <button class="replay" id="spReplay">↻ 重播動畫</button>
+    </div>
+    <div id="spRows"></div>
+    <div class="spcmp-legend"><span><i class="lg old"></i>RTX 4060 Ti 8G（基準 ×1.0）</span><span><i class="lg new"></i>RTX 5070 Ti 16G</span></div>
+  </div>
+  <p class="tag reveal d2" style="font-size:14px;margin-top:26px;color:#86868b">※ 倍率為依硬體規格之估算，實際依模型版本、來源解析度與設定而定。LADA 等去馬賽克工具請僅用於你擁有或合法授權、且為個人用途的內容。</p>
 </section>
 
 <!-- Brand tabs -->
@@ -423,6 +452,45 @@
   document.getElementById('lbClose').addEventListener('click',closeLb);
   lb.addEventListener('click',function(e){ if(e.target===lb||e.target.tagName==='FIGURE') closeLb(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLb(); });
+
+  // Speed comparison (4060 Ti vs 5070 Ti) — interactive 1080p/4K toggle + replay
+  var SP={
+    hd:[ {n:'LADA 去馬賽克',nw:1.7}, {n:'SVFI · RIFE 補幀',nw:1.8}, {n:'SVFI · GMFSS 補幀',nw:1.9} ],
+    uhd:[ {n:'LADA 去馬賽克',nw:2.1}, {n:'SVFI · RIFE 補幀',nw:2.0}, {n:'SVFI · GMFSS 補幀',nw:2.4,oom:true} ]
+  };
+  var SCALE=2.5, spRows=document.getElementById('spRows'), spBuilt=false;
+  function spBuild(res){
+    spRows.innerHTML='';
+    SP[res].forEach(function(d){
+      var newPct=Math.min(d.nw/SCALE*100,100), oldPct=d.oom?0:(1/SCALE*100);
+      var mult=d.oom?'唯一可行':('×'+d.nw.toFixed(1));
+      var oom=d.oom?'<div class="oomtag">⚠ 4060 Ti 8G 在 4K GMFSS 會爆顯存（OOM），此項只有 16GB 跑得動</div>':'';
+      var r=document.createElement('div'); r.className='sprow';
+      r.innerHTML='<div class="nm"><span>'+d.n+'</span><span class="mult">'+mult+'</span></div>'+
+        '<div class="pair"><div class="sptrack"><div class="spfill old" data-w="'+oldPct+'"></div></div>'+
+        '<div class="sptrack"><div class="spfill new" data-w="'+newPct+'"></div></div></div>'+oom;
+      spRows.appendChild(r);
+    });
+  }
+  function spAnim(){
+    var fs=spRows.querySelectorAll('.spfill');
+    fs.forEach(function(f){ f.style.width='0'; });
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      fs.forEach(function(f){ f.style.width=f.dataset.w+'%'; });
+    }); });
+  }
+  function spShow(res){ spBuild(res); spAnim(); }
+  document.querySelectorAll('#spcmp .tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#spcmp .tabs button').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active'); spShow(b.dataset.res);
+    });
+  });
+  document.getElementById('spReplay').addEventListener('click',spAnim);
+  var spIO=new IntersectionObserver(function(es){ es.forEach(function(e){
+    if(e.isIntersecting && !spBuilt){ spBuilt=true; spShow('hd'); spIO.disconnect(); }
+  }); },{threshold:.3});
+  spIO.observe(document.getElementById('spcmp'));
 })();
 </script>
 </body>
