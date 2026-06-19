@@ -191,6 +191,34 @@
   .v-green{background:#e3f7ee;color:#15a66b}.v-yellow{background:#fdf3e0;color:#c98a00}.v-red{background:#fde6ea;color:#e0445e}
   @media(max-width:640px){.sim-machines{grid-template-columns:1fr}}
 
+  /* benchmark + thermals */
+  .bench{max-width:760px;margin:40px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 28px;text-align:left}
+  .therm{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:18px auto 0}
+  .therm .tc{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px;text-align:left}
+  .therm .tc h4{font-size:15px;margin-bottom:8px}
+  .therm .tc .ln{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--line);color:var(--ink2)}
+  .therm .tc .ln:last-child{border-bottom:none}
+  .therm .tc .ln b{color:var(--ink);font-weight:600}
+  .therm .tc .cool{color:#15a66b;font-weight:600}
+  @media(max-width:640px){.therm{grid-template-columns:1fr}}
+
+  /* configurator */
+  .cfg{max-width:760px;margin:40px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:8px 28px 26px;text-align:left}
+  .cfg-row{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+  .cfg-row .info{flex:1} .cfg-row .info b{font-size:15px} .cfg-row .info span{display:block;color:var(--ink2);font-size:13px;margin-top:2px}
+  .cfg-row .save{color:#15a66b;font-weight:600;font-size:14px;white-space:nowrap}
+  .sw{position:relative;width:50px;height:30px;flex:none;cursor:pointer;display:inline-block}
+  .sw input{opacity:0;width:0;height:0;position:absolute}
+  .sw .tr{position:absolute;inset:0;background:#e3e3e8;border-radius:980px;transition:.25s}
+  .sw .kb{position:absolute;top:3px;left:3px;width:24px;height:24px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .sw input:checked + .tr{background:var(--blue)}
+  .sw input:checked ~ .kb{transform:translateX(20px)}
+  .cfg-total{display:flex;align-items:baseline;justify-content:space-between;margin-top:24px;gap:10px;flex-wrap:wrap}
+  .cfg-total .lab{font-size:15px;color:var(--ink2)} .cfg-total .amt{font-size:42px;font-weight:600;letter-spacing:-.02em}
+  .cfg-perf{margin-top:12px;font-size:14px;color:var(--ink2)}
+  .cfg-perf .saved{color:#15a66b;font-weight:600}
+  .cfgchip{display:inline-block;background:#fde6ea;color:#e0445e;border-radius:980px;padding:3px 11px;font-size:12.5px;margin:3px 5px 3px 0}
+
   footer{padding:40px 22px 56px;text-align:center;color:var(--ink2);font-size:12px;background:var(--bg3);line-height:1.6}
   footer .sm{font-size:11px;color:#86868b;max-width:760px;margin:10px auto 0}
 </style>
@@ -203,11 +231,13 @@
   <a class="lnk" href="#looks">外觀</a>
   <a class="lnk" href="#compare">新舊對比</a>
   <a class="lnk" href="#perf">效能</a>
+  <a class="lnk" href="#bench">跑分</a>
   <a class="lnk" href="#aicompute">算力</a>
   <a class="lnk" href="#aimedia">影音</a>
   <a class="lnk" href="#power">耗電</a>
   <a class="lnk" href="#sim">模擬</a>
   <a class="lnk" href="#brands">品牌</a>
+  <a class="lnk" href="#config">配置</a>
   <a class="lnk" href="#reports">報告</a>
 </div></nav>
 
@@ -330,6 +360,32 @@
   </div>
 </section>
 
+<!-- Benchmarks + thermals -->
+<section id="bench">
+  <p class="eyebrow reveal">跑分 · 散熱 · 噪音</p>
+  <h2 class="reveal d1">數字與溫度，都更好看。</h2>
+  <p class="tag reveal d1">合成跑分的提升，加上 360 水冷與三風扇顯卡帶來的低溫與安靜。</p>
+  <div class="bench reveal d1" id="bench1">
+    <div class="spcmp-head"><strong style="font-size:15px">合成跑分（估算）</strong><button class="replay" id="bnReplay">↻ 重播動畫</button></div>
+    <div id="bnRows"></div>
+    <div class="spcmp-legend"><span><i class="lg old"></i>舊 · 12400 / 4060 Ti</span><span><i class="lg new"></i>新 · 7700 / 5070 Ti</span></div>
+  </div>
+  <div class="therm">
+    <div class="tc reveal d1">
+      <h4>🌡️ CPU 散熱（R7 7700 · 65W）</h4>
+      <div class="ln"><span>舊 · 原廠 / 入門空冷</span><b>滿載 ~85°C · 風扇明顯</b></div>
+      <div class="ln"><span>新 · ID-COOLING FX360 水冷</span><b class="cool">~60°C · 安靜</b></div>
+      <div class="ln"><span>冷頭數位螢幕</span><b>即時溫度 / 功耗</b></div>
+    </div>
+    <div class="tc reveal d2">
+      <h4>❄️ GPU 散熱（技嘉 GAMING OC）</h4>
+      <div class="ln"><span>三風扇 + 蒸氣腔均熱板</span><b>滿載 ~65–70°C</b></div>
+      <div class="ln"><span>待機風扇停轉</span><b class="cool">0 dB</b></div>
+      <div class="ln"><span>對比丐版</span><b>低 5–8°C · 更安靜</b></div>
+    </div>
+  </div>
+</section>
+
 <!-- AI compute -->
 <section class="dark" id="aicompute">
   <p class="eyebrow reveal" style="color:#2997ff">AI 算力</p>
@@ -430,6 +486,19 @@
       </tbody>
     </table>
   </div>
+</section>
+
+<!-- Configurator -->
+<section id="config">
+  <p class="eyebrow reveal">配置試算</p>
+  <h2 class="reveal d1">想省一點？試試看。</h2>
+  <p class="tag reveal d1">打開任一「降級選項」，即時看總價下降與取捨。原始滿配 NT$ 83,458。</p>
+  <div class="cfg reveal d1">
+    <div id="cfgRows"></div>
+    <div class="cfg-total"><span class="lab">升級後總價</span><span class="amt" id="cfgAmt">NT$ 83,458</span></div>
+    <div class="cfg-perf"><span class="saved" id="cfgSaved">原始配置</span> · <span id="cfgPerf"></span></div>
+  </div>
+  <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">全部降級最多可省約 NT$ 20,800（降至 ~NT$ 62,658）。價格為市場估算，實際以通路報價為準。</p>
 </section>
 
 <!-- Reports -->
@@ -639,6 +708,59 @@
     simTasksEl.appendChild(c);
   });
   simRender();
+
+  // Benchmarks (estimated synthetic scores)
+  var BN=[
+    {n:'3DMark Time Spy（GPU）', o:13500, w:28000},
+    {n:'3DMark Steel Nomad（GPU）', o:2400, w:5600},
+    {n:'Cinebench R23 多核（CPU）', o:16800, w:19500},
+    {n:'Geekbench 6 多核', o:9500, w:13500}
+  ];
+  function bnBuild(){
+    var el=document.getElementById('bnRows'); el.innerHTML='';
+    BN.forEach(function(d){
+      var oldPct=(d.o/d.w*100).toFixed(1), mult=(d.w/d.o).toFixed(1);
+      var r=document.createElement('div'); r.className='sprow';
+      r.innerHTML='<div class="nm"><span>'+d.n+'</span><span class="mult">'+d.o.toLocaleString()+' → '+d.w.toLocaleString()+'　×'+mult+'</span></div>'+
+        '<div class="pair"><div class="sptrack"><div class="spfill old" data-w="'+oldPct+'" style="width:'+oldPct+'%"></div></div>'+
+        '<div class="sptrack"><div class="spfill new" data-w="100" style="width:100%"></div></div></div>';
+      el.appendChild(r);
+    });
+  }
+  function bnAnim(){ var fs=document.querySelectorAll('#bnRows .spfill'); fs.forEach(function(f){f.style.width='0';});
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ fs.forEach(function(f){f.style.width=f.dataset.w+'%';}); }); }); }
+  bnBuild();
+  document.getElementById('bnReplay').addEventListener('click',bnAnim);
+  var bnBuilt=false;
+  var bnIO=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !bnBuilt){ bnBuilt=true; bnAnim(); bnIO.disconnect(); } }); },{threshold:.3});
+  bnIO.observe(document.getElementById('bench1'));
+
+  // Configurator
+  var CFG=[
+    {b:'記憶體 48GB → 32GB DDR5-6000', s:'容量降一階，AI 多工稍緊', save:8000, perf:'多工餘裕↓'},
+    {b:'SSD Gen5 → Gen4（美光 T500）', s:'日常體感差異極小', save:4000, perf:'載入略慢（無感）'},
+    {b:'顯卡 GAMING OC → 丐版 WINDFORCE', s:'效能差 <3%，散熱與噪音略差', save:7000, perf:'散熱/靜音↓'},
+    {b:'散熱 360 水冷 → 塔散（利民 PS120）', s:'對 65W 的 7700 完全足夠', save:800, perf:'溫度略高'},
+    {b:'主機板 STEALTH → MAG TOMAHAWK', s:'供電更強但失去背插美觀', save:1000, perf:'外觀/走線↓'}
+  ];
+  var BASE=83458;
+  function fmtNT(n){ return 'NT$ '+n.toLocaleString('en-US'); }
+  function cfgRender(){
+    var saved=0, impacts=[];
+    CFG.forEach(function(c,i){ if(document.getElementById('cfg'+i).checked){ saved+=c.save; impacts.push(c.perf); } });
+    document.getElementById('cfgAmt').textContent=fmtNT(BASE-saved);
+    document.getElementById('cfgSaved').textContent=saved>0?('已省 '+fmtNT(saved)):'原始配置';
+    document.getElementById('cfgPerf').innerHTML=impacts.length?('取捨：'+impacts.map(function(x){return '<span class="cfgchip">'+x+'</span>';}).join('')):'<span style="color:#15a66b">維持滿配，零妥協</span>';
+  }
+  var cfgRowsEl=document.getElementById('cfgRows');
+  CFG.forEach(function(c,i){
+    var row=document.createElement('div'); row.className='cfg-row';
+    row.innerHTML='<div class="info"><b>'+c.b+'</b><span>'+c.s+'</span></div><div class="save">省 '+fmtNT(c.save)+'</div>'+
+      '<label class="sw"><input type="checkbox" id="cfg'+i+'"><span class="tr"></span><span class="kb"></span></label>';
+    cfgRowsEl.appendChild(row);
+    row.querySelector('input').addEventListener('change',cfgRender);
+  });
+  cfgRender();
 })();
 </script>
 </body>
