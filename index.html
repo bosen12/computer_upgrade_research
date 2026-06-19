@@ -239,6 +239,25 @@
   .cpu-detail .specs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .cpu-detail .specs span{background:#fff;border:1px solid var(--line);border-radius:980px;padding:4px 11px;font-size:12.5px;color:var(--ink2)}
 
+  /* ram 32 vs 48 */
+  .ramperf-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:760px;margin:32px auto 0}
+  .ramperf-row .pf{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 18px;font-size:15px;min-width:150px}
+  .ramperf-row .pf b{display:block;font-size:12.5px;color:var(--ink2);font-weight:600;margin-bottom:3px}
+  .ramcmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:820px;margin:26px auto 0;text-align:left}
+  .ramcol{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 24px}
+  .ramcol.best{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+  .ramcap{font-size:24px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+  .tagbest{font-size:12px;font-weight:600;color:#fff;background:var(--blue);border-radius:980px;padding:3px 11px}
+  .rampill{font-size:13px;color:var(--ink2);margin:4px 0 14px}
+  .ramlist{list-style:none;padding:0;margin:0}
+  .ramlist li{position:relative;padding:10px 0 10px 28px;font-size:14px;border-bottom:1px solid var(--line);color:var(--ink)}
+  .ramlist li:last-child{border-bottom:none}
+  .ramlist li::before{position:absolute;left:0;top:10px;font-weight:700}
+  .ramlist li.ok::before{content:"✓";color:#15a66b}
+  .ramlist li.warn::before{content:"!";color:#c98a00}
+  .ramlist li.bad::before{content:"✕";color:#e0445e}
+  @media(max-width:640px){.ramcmp{grid-template-columns:1fr}}
+
   footer{padding:40px 22px 56px;text-align:center;color:var(--ink2);font-size:12px;background:var(--bg3);line-height:1.6}
   footer .sm{font-size:11px;color:#86868b;max-width:760px;margin:10px auto 0}
 </style>
@@ -258,7 +277,7 @@
   <a class="lnk" href="#sim">模擬</a>
   <a class="lnk" href="#brands">品牌</a>
   <a class="lnk" href="#cpu">CPU</a>
-  <a class="lnk" href="#config">配置</a>
+  <a class="lnk" href="#ram">記憶體</a>
   <a class="lnk" href="#reports">報告</a>
 </div></nav>
 
@@ -523,17 +542,44 @@
   <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">效能為相對估算：3D V-Cache（X3D）對遊戲幫助大、對多核較無感；Zen5（9000）多核與能效更好。價格為市場參考。升級皆免換平台。</p>
 </section>
 
-<!-- Configurator -->
-<section id="config">
-  <p class="eyebrow reveal">配置試算</p>
-  <h2 class="reveal d1">想省一點？試試看。</h2>
-  <p class="tag reveal d1">打開任一「降級選項」，即時看總價下降與取捨。原始滿配 NT$ 83,458。</p>
-  <div class="cfg reveal d1">
-    <div id="cfgRows"></div>
-    <div class="cfg-total"><span class="lab">升級後總價</span><span class="amt" id="cfgAmt">NT$ 83,458</span></div>
-    <div class="cfg-perf"><span class="saved" id="cfgSaved">原始配置</span> · <span id="cfgPerf"></span></div>
+<!-- RAM 32 vs 48 -->
+<section id="ram">
+  <p class="eyebrow reveal">記憶體選擇</p>
+  <h2 class="reveal d1">32GB 還是 48GB？</h2>
+  <p class="tag reveal d1">兩者同為 DDR5-6000 CL28——<strong>頻寬與延遲完全相同</strong>。差別只在「容量餘裕」如何影響日常多工。</p>
+
+  <div class="ramperf-row reveal d1">
+    <div class="pf"><b>頻寬</b>相同 ~96 GB/s</div>
+    <div class="pf"><b>延遲</b>相同 CL28 ~9.3ns</div>
+    <div class="pf"><b>遊戲 FPS</b>幾乎無差*</div>
+    <div class="pf"><b>多工餘裕</b>48GB 多 16GB</div>
   </div>
-  <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">全部降級最多可省約 NT$ 20,800（降至 ~NT$ 62,658）。價格為市場估算，實際以通路報價為準。</p>
+
+  <div class="ramcmp reveal d1">
+    <div class="ramcol">
+      <div class="ramcap">32GB</div>
+      <div class="rampill">16GB × 2 · 舊配置</div>
+      <ul class="ramlist">
+        <li class="ok">遊戲 + 瀏覽器 + Discord</li>
+        <li class="ok">單跑 ComfyUI 生圖</li>
+        <li class="warn">生圖 + 3 機器人 + 多分頁 → 吃緊（接近滿載）</li>
+        <li class="bad">再疊大型遊戲 / 影音 AI → 爆，開始變慢</li>
+        <li class="bad">大量 Mod 城市模擬 / 大模型 offload → 不足</li>
+      </ul>
+    </div>
+    <div class="ramcol best">
+      <div class="ramcap">48GB <span class="tagbest">本單</span></div>
+      <div class="rampill">24GB × 2 · 多 16GB 緩衝</div>
+      <ul class="ramlist">
+        <li class="ok">上述情境全部仍有餘裕</li>
+        <li class="ok">生圖掛機 + 多機器人 + 幾十個分頁同開</li>
+        <li class="ok">大量 Mod 城市模擬、大模型 CPU offload buffer</li>
+        <li class="ok">SVFI / LADA 影音與生圖並行</li>
+        <li class="ok">VRAM 溢出可由系統記憶體承接</li>
+      </ul>
+    </div>
+  </div>
+  <p class="tag reveal d2" style="font-size:14px;margin-top:24px;color:#86868b">*遊戲 FPS 幾乎無差，除非大量 Mod 的城市模擬把 32GB 吃爆。結論：純遊戲 32GB 就夠；你的「生圖 + 多機器人 + 多工掛機」用法，48GB 明顯更從容、更耐未來。</p>
 </section>
 
 <!-- Reports -->
@@ -770,32 +816,7 @@
   var bnIO=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !bnBuilt){ bnBuilt=true; bnAnim(); bnIO.disconnect(); } }); },{threshold:.3});
   bnIO.observe(document.getElementById('bench1'));
 
-  // Configurator
-  var CFG=[
-    {b:'記憶體 48GB → 32GB DDR5-6000', s:'容量降一階，AI 多工稍緊', save:8000, perf:'多工餘裕↓'},
-    {b:'SSD Gen5 → Gen4（美光 T500）', s:'日常體感差異極小', save:4000, perf:'載入略慢（無感）'},
-    {b:'顯卡 GAMING OC → 丐版 WINDFORCE', s:'效能差 <3%，散熱與噪音略差', save:7000, perf:'散熱/靜音↓'},
-    {b:'散熱 360 水冷 → 塔散（利民 PS120）', s:'對 65W 的 7700 完全足夠', save:800, perf:'溫度略高'},
-    {b:'主機板 STEALTH → MAG TOMAHAWK', s:'供電更強但失去背插美觀', save:1000, perf:'外觀/走線↓'}
-  ];
-  var BASE=83458;
-  function fmtNT(n){ return 'NT$ '+n.toLocaleString('en-US'); }
-  function cfgRender(){
-    var saved=0, impacts=[];
-    CFG.forEach(function(c,i){ if(document.getElementById('cfg'+i).checked){ saved+=c.save; impacts.push(c.perf); } });
-    document.getElementById('cfgAmt').textContent=fmtNT(BASE-saved);
-    document.getElementById('cfgSaved').textContent=saved>0?('已省 '+fmtNT(saved)):'原始配置';
-    document.getElementById('cfgPerf').innerHTML=impacts.length?('取捨：'+impacts.map(function(x){return '<span class="cfgchip">'+x+'</span>';}).join('')):'<span style="color:#15a66b">維持滿配，零妥協</span>';
-  }
-  var cfgRowsEl=document.getElementById('cfgRows');
-  CFG.forEach(function(c,i){
-    var row=document.createElement('div'); row.className='cfg-row';
-    row.innerHTML='<div class="info"><b>'+c.b+'</b><span>'+c.s+'</span></div><div class="save">省 '+fmtNT(c.save)+'</div>'+
-      '<label class="sw"><input type="checkbox" id="cfg'+i+'"><span class="tr"></span><span class="kb"></span></label>';
-    cfgRowsEl.appendChild(row);
-    row.querySelector('input').addEventListener('change',cfgRender);
-  });
-  cfgRender();
+  // (配置試算器已移除，改為記憶體 32 vs 48 對比 — 純內容，無 JS)
 
   // CPU upgrade-path compare (default 7700)
   var CPUS=[
