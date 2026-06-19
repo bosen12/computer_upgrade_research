@@ -532,14 +532,15 @@
 <section class="gray" id="cpu">
   <p class="eyebrow reveal">處理器升級路徑</p>
   <h2 class="reveal d1">想再往上，還有空間。</h2>
-  <p class="tag reveal d1">AM5 沿用同一張 B850 主機板就能直上 X3D / Zen5。點選比較——預設為本單的 7700。</p>
+  <p class="tag reveal d1">含現役 i5-12400，比較遊戲、多核與「開啟網頁」響應。AM5 沿用同一張 B850 就能直上 X3D / Zen5。點選切換——預設為本單的 7700。</p>
   <div class="cpu reveal d1" id="cpu1">
     <div class="cpu-chips" id="cpuChips"></div>
     <div class="cpu-metric"><h5>🎮 1080p 遊戲效能（相對 7700）</h5><div id="cpuGame"></div></div>
     <div class="cpu-metric"><h5>🧮 多核效能（相對 7700）</h5><div id="cpuMulti"></div></div>
+    <div class="cpu-metric"><h5>🌐 開啟網頁 / 日常響應（相對 7700）</h5><div id="cpuWeb"></div></div>
     <div class="cpu-detail"><span id="cpuNote"></span><div class="specs" id="cpuSpecs"></div></div>
   </div>
-  <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">效能為相對估算：3D V-Cache（X3D）對遊戲幫助大、對多核較無感；Zen5（9000）多核與能效更好。價格為市場參考。升級皆免換平台。</p>
+  <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">效能為相對估算：3D V-Cache（X3D）對遊戲幫助大、對多核較無感；Zen5（9000）多核與能效更好。開啟網頁速度主要看單核響應，各 CPU 差距不大——連現役 12400 都很流暢，瓶頸通常在網速而非 CPU。價格為市場參考，升級皆免換平台。</p>
 </section>
 
 <!-- RAM 32 vs 48 -->
@@ -820,12 +821,13 @@
 
   // CPU upgrade-path compare (default 7700)
   var CPUS=[
-    {id:'7700',    sn:'7700',    name:'Ryzen 7 7700',    arch:'Zen 4',               ct:'8C/16T', tdp:65,  price:6890,  game:100, multi:100, def:true, note:'本單選擇 · 65W 高能效，多工 / AI 均衡的甜蜜點。'},
-    {id:'7800x3d', sn:'7800X3D', name:'Ryzen 7 7800X3D', arch:'Zen 4 + 3D V-Cache',  ct:'8C/16T', tdp:120, price:12000, game:122, multi:98,  note:'Zen4 遊戲王者，純遊戲最划算的升級；多核與 7700 相近。'},
-    {id:'9700x',   sn:'9700X',   name:'Ryzen 7 9700X',   arch:'Zen 5',               ct:'8C/16T', tdp:65,  price:9990,  game:108, multi:115, note:'Zen5 IPC 提升，多核最強、能效佳；遊戲小贏 7700。'},
-    {id:'9800x3d', sn:'9800X3D', name:'Ryzen 7 9800X3D', arch:'Zen 5 + 3D V-Cache',  ct:'8C/16T', tdp:120, price:15500, game:130, multi:120, note:'目前最強遊戲 CPU，遊戲與多核雙強，價格也最高。'}
+    {id:'12400',   sn:'12400',   name:'Core i5-12400',   arch:'Intel 12代 Alder Lake', ct:'6C/12T', tdp:65,  old:true,     game:82,  multi:65,  web:88,  note:'現役舊 CPU。開網頁、文書、一般遊戲仍流暢；多核與重度多工明顯落後新平台。'},
+    {id:'7700',    sn:'7700',    name:'Ryzen 7 7700',    arch:'Zen 4',                 ct:'8C/16T', tdp:65,  price:6890,   game:100, multi:100, web:100, def:true, note:'本單選擇 · 65W 高能效，多工 / AI 均衡的甜蜜點。'},
+    {id:'7800x3d', sn:'7800X3D', name:'Ryzen 7 7800X3D', arch:'Zen 4 + 3D V-Cache',    ct:'8C/16T', tdp:120, price:12000,  game:122, multi:98,  web:99,  note:'Zen4 遊戲王者，純遊戲最划算的升級；多核、網頁響應與 7700 相近。'},
+    {id:'9700x',   sn:'9700X',   name:'Ryzen 7 9700X',   arch:'Zen 5',                 ct:'8C/16T', tdp:65,  price:9990,   game:108, multi:115, web:114, note:'Zen5 IPC 提升，多核與單核（網頁響應）最強、能效佳。'},
+    {id:'9800x3d', sn:'9800X3D', name:'Ryzen 7 9800X3D', arch:'Zen 5 + 3D V-Cache',    ct:'8C/16T', tdp:120, price:15500,  game:130, multi:120, web:116, note:'目前最強遊戲 CPU，遊戲、多核與網頁響應全面領先，價格也最高。'}
   ];
-  var GMAX=135, MMAX=128, cpuSel='7700';
+  var GMAX=135, MMAX=128, WMAX=122, cpuSel='7700';
   function cpuBars(target,key,max){
     target.innerHTML='';
     CPUS.forEach(function(c){
@@ -837,16 +839,25 @@
   function cpuRender(){
     cpuBars(document.getElementById('cpuGame'),'game',GMAX);
     cpuBars(document.getElementById('cpuMulti'),'multi',MMAX);
-    var c=CPUS.filter(function(x){return x.id===cpuSel;})[0], base=CPUS[0], dp=c.price-base.price;
-    var pd=dp===0?'本單價格':(dp>0?'比 7700 貴 NT$ '+dp.toLocaleString():'比 7700 省 NT$ '+(-dp).toLocaleString());
+    cpuBars(document.getElementById('cpuWeb'),'web',WMAX);
+    var c=CPUS.filter(function(x){return x.id===cpuSel;})[0];
+    var base=CPUS.filter(function(x){return x.id==='7700';})[0];
     document.getElementById('cpuNote').textContent=c.note;
-    document.getElementById('cpuSpecs').innerHTML='<span>'+c.arch+'</span><span>'+c.ct+'</span><span>'+c.tdp+'W</span><span>約 NT$ '+c.price.toLocaleString()+'</span><span>'+pd+'</span>';
+    var specs;
+    if(c.old){
+      specs='<span>'+c.arch+'</span><span>'+c.ct+'</span><span>'+c.tdp+'W</span><span>現役 · Intel LGA1700</span><span>升級前平台</span>';
+    } else {
+      var dp=c.price-base.price;
+      var pd=dp===0?'本單價格':(dp>0?'比 7700 貴 NT$ '+dp.toLocaleString():'比 7700 省 NT$ '+(-dp).toLocaleString());
+      specs='<span>'+c.arch+'</span><span>'+c.ct+'</span><span>'+c.tdp+'W</span><span>約 NT$ '+c.price.toLocaleString()+'</span><span>'+pd+'</span>';
+    }
+    document.getElementById('cpuSpecs').innerHTML=specs;
     document.querySelectorAll('#cpuChips .cpu-chip').forEach(function(b){ b.classList.toggle('on',b.dataset.id===cpuSel); });
   }
   var cpuChipsEl=document.getElementById('cpuChips');
   CPUS.forEach(function(c){
     var b=document.createElement('div'); b.className='cpu-chip'+(c.id===cpuSel?' on':''); b.dataset.id=c.id;
-    b.innerHTML=c.sn+(c.def?'<span class="def">本單</span>':'');
+    b.innerHTML=c.sn+(c.def?'<span class="def">本單</span>':'')+(c.old?'<span class="def">舊</span>':'');
     b.addEventListener('click',function(){ cpuSel=c.id; cpuRender(); });
     cpuChipsEl.appendChild(b);
   });
