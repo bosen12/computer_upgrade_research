@@ -168,6 +168,28 @@
   .spcmp-legend{display:flex;gap:22px;margin-top:18px;font-size:13px;color:var(--ink2)}
   .spcmp-legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
   .lg.old{background:#c7c7cc}.lg.new{background:linear-gradient(90deg,#0071e3,#9c4dff)}
+  section.dark .stat .cap{color:#a1a1a6}
+
+  /* power + sim shared card */
+  .pwr,.sim{max-width:760px;margin:40px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 28px;text-align:left}
+  .pwr-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px}
+  .pwr-card .pwr-name{font-size:14px;color:var(--ink2);font-weight:500}
+  .pwr-card .pwr-w{font-size:36px;font-weight:600;letter-spacing:-.02em;margin:4px 0 10px}
+  .pwr-note{margin-top:20px;font-size:15px;line-height:1.5;color:var(--ink);background:var(--bg3);border-radius:14px;padding:14px 16px}
+  @media(max-width:640px){.pwr-grid{grid-template-columns:1fr}}
+  .sim-tasks{display:flex;flex-wrap:wrap;gap:10px}
+  .sim-chip{border:1px solid var(--line);background:#fff;border-radius:980px;padding:9px 16px;font-size:14px;cursor:pointer;transition:.2s;user-select:none}
+  .sim-chip:hover{border-color:#b0b0b6}
+  .sim-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .sim-machines{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+  .sim-m{border:1px solid var(--line);border-radius:18px;padding:18px 20px;background:var(--bg2)}
+  .sim-mh{font-size:15px;font-weight:600;margin-bottom:12px}
+  .sim-bar{margin:12px 0}
+  .sim-blabel{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin-bottom:6px}
+  .sim-blabel b{color:var(--ink)}
+  .sim-verdict{margin-top:14px;font-size:14px;font-weight:600;border-radius:980px;padding:7px 14px;display:inline-block}
+  .v-green{background:#e3f7ee;color:#15a66b}.v-yellow{background:#fdf3e0;color:#c98a00}.v-red{background:#fde6ea;color:#e0445e}
+  @media(max-width:640px){.sim-machines{grid-template-columns:1fr}}
 
   footer{padding:40px 22px 56px;text-align:center;color:var(--ink2);font-size:12px;background:var(--bg3);line-height:1.6}
   footer .sm{font-size:11px;color:#86868b;max-width:760px;margin:10px auto 0}
@@ -181,7 +203,10 @@
   <a class="lnk" href="#looks">外觀</a>
   <a class="lnk" href="#compare">新舊對比</a>
   <a class="lnk" href="#perf">效能</a>
+  <a class="lnk" href="#aicompute">算力</a>
   <a class="lnk" href="#aimedia">影音</a>
+  <a class="lnk" href="#power">耗電</a>
+  <a class="lnk" href="#sim">模擬</a>
   <a class="lnk" href="#brands">品牌</a>
   <a class="lnk" href="#reports">報告</a>
 </div></nav>
@@ -305,6 +330,19 @@
   </div>
 </section>
 
+<!-- AI compute -->
+<section class="dark" id="aicompute">
+  <p class="eyebrow reveal" style="color:#2997ff">AI 算力</p>
+  <h2 class="reveal d1">近 4 倍的 AI 馬力。</h2>
+  <p class="tag reveal d2">第 5 代 Tensor Core，原生硬體加速 FP8 / FP4 量化。生圖、補幀、去馬賽克全面受惠。</p>
+  <div class="stats" style="margin-top:50px">
+    <div class="stat reveal d1"><div class="num" data-to="1406" data-comma="1">0</div><div class="cap">FP4 AI TOPS · 4060 Ti ≈ 353</div></div>
+    <div class="stat reveal d2"><div class="num" data-to="280">0</div><div class="cap">Tensor 核心（第5代）· 4060 Ti 136</div></div>
+    <div class="stat reveal d3"><div class="num" data-to="44">0</div><div class="cap">FP16 TFLOPS · 4060 Ti ≈ 22</div></div>
+    <div class="stat reveal d4"><div class="num" data-to="8960" data-comma="1">0</div><div class="cap">CUDA 核心 · 4060 Ti 4352</div></div>
+  </div>
+</section>
+
 <!-- AI media -->
 <section class="gray" id="aimedia">
   <p class="eyebrow reveal">影音 AI</p>
@@ -327,6 +365,41 @@
     <div class="spcmp-legend"><span><i class="lg old"></i>RTX 4060 Ti 8G（基準 ×1.0）</span><span><i class="lg new"></i>RTX 5070 Ti 16G</span></div>
   </div>
   <p class="tag reveal d2" style="font-size:14px;margin-top:26px;color:#86868b">※ 倍率為依硬體規格之估算，實際依模型版本、來源解析度與設定而定。LADA 等去馬賽克工具請僅用於你擁有或合法授權、且為個人用途的內容。</p>
+</section>
+
+<!-- Power -->
+<section id="power">
+  <p class="eyebrow reveal">耗電量</p>
+  <h2 class="reveal d1">更強，但依然理性。</h2>
+  <p class="tag reveal d1">更高效能自然帶來更高功耗——但每一瓦都換到更多工作完成。切換負載看整機功耗。</p>
+  <div class="pwr reveal d1" id="pwr">
+    <div class="tabs" style="margin-top:0">
+      <button class="active" data-load="idle">待機</button>
+      <button data-load="game">遊戲</button>
+      <button data-load="ai">AI 滿載</button>
+    </div>
+    <div class="pwr-grid">
+      <div class="pwr-card"><div class="pwr-name">舊 · i5-12400 + RTX 4060 Ti</div><div class="pwr-w" id="pwOld">—</div><div class="sptrack"><div class="spfill old" id="pwOldBar"></div></div></div>
+      <div class="pwr-card"><div class="pwr-name">新 · R7 7700 + RTX 5070 Ti</div><div class="pwr-w" id="pwNew">—</div><div class="sptrack"><div class="spfill new" id="pwNewBar"></div></div></div>
+    </div>
+    <div class="pwr-note" id="pwNote"></div>
+  </div>
+  <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">電源由 650W 升至 850W 金牌全模組，整機滿載約 60% 負載（效率最佳區間），並為新世代顯卡瞬時功耗預留餘裕。數值為整機估算。</p>
+</section>
+
+<!-- Daily simulator -->
+<section class="gray" id="sim">
+  <p class="eyebrow reveal">日常模擬</p>
+  <h2 class="reveal d1">模擬你的一天。</h2>
+  <p class="tag reveal d1">勾選你會「同時」開的工作，看看舊機與新機各自撐不撐得住。</p>
+  <div class="sim reveal d1" id="sim1">
+    <div class="sim-tasks" id="simTasks"></div>
+    <div class="sim-machines">
+      <div class="sim-m" id="simM-old"></div>
+      <div class="sim-m" id="simM-new"></div>
+    </div>
+  </div>
+  <p class="tag reveal d2" style="font-size:14px;margin-top:22px;color:#86868b">含系統基底約 5GB RAM / 1GB VRAM。占用為估算；VRAM 超出 8GB 時舊卡會啟用共享系統記憶體，速度大幅下降。</p>
 </section>
 
 <!-- Brand tabs -->
@@ -491,6 +564,79 @@
     if(e.isIntersecting && !spBuilt){ spBuilt=true; spShow('hd'); spIO.disconnect(); }
   }); },{threshold:.3});
   spIO.observe(document.getElementById('spcmp'));
+
+  // Power by load
+  var PW={
+    idle:{o:70,n:90,  note:'待機功耗幾乎沒差，多數時間就是這個區間。'},
+    game:{o:260,n:430,note:'遊戲時多約 <b>170W</b>，但換來 <b>+150%</b> 的 1080p 3A 效能。'},
+    ai:{o:250,n:445, note:'AI 滿載多約 <b>195W</b>，但生圖、補幀快約 <b>2×</b>——完成<b>同一批工作</b>的總耗電可能更低（時間更短）。'}
+  };
+  var PWSCALE=600;
+  function pwShow(load){
+    var d=PW[load];
+    document.getElementById('pwOld').textContent=d.o+' W';
+    document.getElementById('pwNew').textContent=d.n+' W';
+    document.getElementById('pwNote').innerHTML=d.note;
+    var ob=document.getElementById('pwOldBar'), nb=document.getElementById('pwNewBar');
+    ob.style.width='0'; nb.style.width='0';
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      ob.style.width=Math.min(d.o/PWSCALE*100,100)+'%';
+      nb.style.width=Math.min(d.n/PWSCALE*100,100)+'%';
+    }); });
+  }
+  document.querySelectorAll('#pwr .tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#pwr .tabs button').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active'); pwShow(b.dataset.load);
+    });
+  });
+  var pwIO=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ pwShow('idle'); pwIO.disconnect(); } }); },{threshold:.3});
+  pwIO.observe(document.getElementById('pwr'));
+
+  // Daily simulator
+  var TASKS=[
+    {label:'🎨 ComfyUI 生圖', ram:6, vram:7, on:true},
+    {label:'🤖 3+ 腳本機器人', ram:6, vram:0.5, on:true},
+    {label:'🌐 瀏覽器多分頁', ram:5, vram:1, on:true},
+    {label:'💬 Discord', ram:2, vram:0.5, on:true},
+    {label:'🎮 3A 遊戲', ram:10, vram:8, on:false},
+    {label:'🎬 SVFI / LADA 影音', ram:6, vram:7, on:false}
+  ];
+  var SIMBASE={ram:5,vram:1};
+  var MS={ old:{ram:32,vram:8,name:'舊機 · 32GB RAM / 8GB VRAM'}, "new":{ram:48,vram:16,name:'新機 · 48GB RAM / 16GB VRAM'} };
+  var COL={red:'#e0445e',yellow:'#c98a00',green:'#15a66b'};
+  function simStatus(used,cap,isVram,isOld){
+    var r=used/cap;
+    if(r>1) return {c:'red', t:isVram?(isOld?'超量 · 啟用共享記憶體，大幅變慢':'超出 VRAM · 需 offload 變慢'):'爆記憶體 · 嚴重卡頓'};
+    if(r>0.85) return {c:'yellow', t:'吃緊'};
+    return {c:'green', t:'從容'};
+  }
+  function simBar(label,used,cap,color){
+    var pct=Math.min(used/cap*100,100);
+    return '<div class="sim-bar"><div class="sim-blabel"><span>'+label+'</span><span><b>'+(Math.round(used*10)/10)+'</b> / '+cap+' GB</span></div>'+
+      '<div class="sptrack"><div class="spfill" style="width:'+pct+'%;background:'+color+'"></div></div></div>';
+  }
+  function simRender(){
+    var tot={ram:SIMBASE.ram,vram:SIMBASE.vram};
+    TASKS.forEach(function(t){ if(t.on){ tot.ram+=t.ram; tot.vram+=t.vram; } });
+    ['old','new'].forEach(function(k){
+      var m=MS[k], el=document.getElementById('simM-'+k);
+      var rs=simStatus(tot.ram,m.ram,false,k==='old'), vs=simStatus(tot.vram,m.vram,true,k==='old');
+      var worst=(rs.c==='red'||vs.c==='red')?'red':((rs.c==='yellow'||vs.c==='yellow')?'yellow':'green');
+      var vtxt=worst==='green'?'✓ 從容應付':(worst==='yellow'?'△ 吃緊堪用':'✕ 撐不住');
+      el.innerHTML='<div class="sim-mh">'+m.name+'</div>'+
+        simBar('記憶體',tot.ram,m.ram,COL[rs.c])+
+        simBar('VRAM',tot.vram,m.vram,COL[vs.c])+
+        '<div class="sim-verdict v-'+worst+'">'+vtxt+'</div>';
+    });
+  }
+  var simTasksEl=document.getElementById('simTasks');
+  TASKS.forEach(function(t){
+    var c=document.createElement('div'); c.className='sim-chip'+(t.on?' on':''); c.textContent=t.label;
+    c.addEventListener('click',function(){ t.on=!t.on; c.classList.toggle('on',t.on); simRender(); });
+    simTasksEl.appendChild(c);
+  });
+  simRender();
 })();
 </script>
 </body>
